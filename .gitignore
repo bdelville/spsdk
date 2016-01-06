@@ -1,0 +1,12 @@
+.gradle
+*.iml
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+.hprof
+.idea
+/build
+build
+SmartExtensionUtils/gen
+SmartExtensionAPI/gen
