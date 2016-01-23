@@ -2,9 +2,6 @@ package eu.hithredin.spsdk.app;
 
 import android.app.Activity;
 import android.app.Application;
-import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.res.Configuration;
 import android.os.Handler;
@@ -13,18 +10,23 @@ import android.util.Log;
 
 
 import java.lang.ref.WeakReference;
+
+import de.greenrobot.event.EventBus;
 import eu.hithredin.spsdk.BuildConfig;
+import eu.hithredin.spsdk.common.event.OrientationAppChanged;
 import eu.hithredin.spsdk.data.DeviceData;
 
 /**
  * Created by bdelville on 10/07/2014.
- * Base class that can be overriden for the application. Always use it
+ * Base class that can be overriden for the app. Always use it
  */
-public class BaseApplication extends Application {
+public abstract class BaseApplication extends Application {
+
+    private static final String LOG_TAG = BaseApplication.class.getSimpleName();
 
     public static String appVersion;
 
-    private static BaseApplication appApplication;
+    private static BaseApplication app;
 
     private static WeakReference<Activity> currentActivity;
 
@@ -43,7 +45,7 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         //Fabric.with(this, new Crashlytics());
-        appApplication = this;
+        app = this;
         DeviceData.get().init(this, BuildConfig.DEBUG);
 
         try {
@@ -61,19 +63,19 @@ public class BaseApplication extends Application {
     @Override
     public void onConfigurationChanged(final Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        Log.e(LOG_TAG, "onConfigurationChanged");
 
-        Log.e(getClass().getName(), " rotation");
+
         if(lastOrientation != newConfig.orientation){
             DeviceData.get().reinit();
             lastOrientation = newConfig.orientation;
 
-            /*
             runLater(new Runnable() {
                 @Override
                 public void run() {
                     EventBus.getDefault().post(new OrientationAppChanged(newConfig));
                 }
-            });*/
+            });
         }
     }
 
@@ -81,14 +83,19 @@ public class BaseApplication extends Application {
         runLater(action, 0);
     }
 
+    /**
+     * Run on the UI Thread later on
+     * @param action
+     * @param timer
+     */
     public static void runLater(Runnable action, long timer){
-        if(appApplication == null){
+        if(app == null){
             return;
         }
         if(timer <= 0){
-            appApplication.laterRunner.post(action);
+            app.laterRunner.post(action);
         } else{
-            appApplication.laterRunner.postDelayed(action, timer);
+            app.laterRunner.postDelayed(action, timer);
         }
     }
 

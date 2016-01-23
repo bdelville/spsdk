@@ -7,15 +7,26 @@ import eu.hithredin.spsdk.common.Constant;
 import android.support.v4.app.FragmentTransaction;
 
 /**
- * Activity does not define any view, but only the behaviour of the screen (orientation, ...)
- * Fragments layout is done within the MainContainer Fragment
+ * The activities does not define any view, but only the behaviour of the screen (orientation, ...)
+ * Fragments layout is done within the MainContainer Fragment.
+ *
+ * Activity: The functionnality that the user wants. Does contains only one LayoutFragment.
+ * LayoutFragment : Arrange different or one fragment according to the device state (tablet, landscape, ...)
+ * Fragment: Single functionnality fragment
  */
 public class MainActivity extends BaseLifeActivity {
+
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     public static void openPage(Class clazzFragment){
         openPage(clazzFragment, new Bundle());
     }
 
+    /**
+     * Open a new activity
+     * @param clazzFragment
+     * @param args
+     */
     public static void openPage(Class clazzFragment, Bundle args){
         Intent intent = new Intent();
         intent.getExtras().putAll(args);

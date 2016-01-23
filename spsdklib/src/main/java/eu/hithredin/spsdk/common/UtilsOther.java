@@ -41,7 +41,12 @@ public class UtilsOther {
         today, tomorrow, two_day_after, yesterday, after, before
     }
 
-    public static DATE_RANGE dateToDay(Date date) {
+    /**
+     * Common helper to know the date range from now
+     * @param date
+     * @return
+     */
+    public static DATE_RANGE dateToDayRange(Date date) {
         if (date == null) {
             return DATE_RANGE.before;
         }

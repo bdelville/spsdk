@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 
 /**
  * Created by benoit on 1/6/16.
+ *
+ * Helper to know when the activity resumes from the exterior or within the app
  */
 public class BaseLifeActivity extends AppCompatActivity {
 
@@ -50,6 +52,10 @@ public class BaseLifeActivity extends AppCompatActivity {
         BaseApplication.setCurrentActivity(this);
     }
 
+    /**
+     * Call only be called once after a resume
+     * @return true if the activity is resumed from outside this app
+     */
     public static boolean isResumedFromExterior() {
         boolean status = !RFE_finished && (RFE_created ^ RFE_paused);
         resetResumedFromExterior();

@@ -26,7 +26,7 @@ public class UtilsView {
     }
 
     @SuppressLint("NewApi")
-    public static void removeGlobalLayoutListener(View v, ViewTreeObserver.OnGlobalLayoutListener l){
+    public static void removeGlobalOnLayoutListener(View v, ViewTreeObserver.OnGlobalLayoutListener l){
         ViewTreeObserver vto = v.getViewTreeObserver();
 
         if(DeviceData.get().getSdk() < 16){
@@ -38,22 +38,20 @@ public class UtilsView {
 
     /**
      *
-     * @param ctx
      * @param name
      * @return the resource string id corresponding to the provided string (R.string.*)
      */
-    public static int getResString(Context ctx, String name){
-        return ctx.getResources().getIdentifier(name, "string", ctx.getPackageName());
+    public static int getResString(String name){
+        return DeviceData.ctx().getResources().getIdentifier(name, "string", DeviceData.ctx().getPackageName());
     }
 
     /**
      *
-     * @param ctx
      * @param name
      * @return the resource id corresponding to the string (R.id.*)
      */
-    public static int getResId(Context ctx, String name){
-        return ctx.getResources().getIdentifier(name, "id", ctx.getPackageName());
+    public static int getResId(String name){
+        return DeviceData.ctx().getResources().getIdentifier(name, "id", DeviceData.ctx().getPackageName());
     }
 
     /**
@@ -61,13 +59,13 @@ public class UtilsView {
      * @param view
      * @param status
      */
-    public static void toggleEnable(View view, boolean status){
+    public static void toggleEnabled(View view, boolean status){
         view.setEnabled(status);
 
         if(view instanceof ViewGroup){
             ViewGroup group = (ViewGroup) view;
             for (int i = 0; i < group.getChildCount(); i++){
-                toggleEnable(group.getChildAt(i), status);
+                toggleEnabled(group.getChildAt(i), status);
             }
         }
     }
@@ -97,18 +95,14 @@ public class UtilsView {
     }
 
     /**
-     * Shortcut
-     * @param ctx
+     * Shortcut to find a view by string id
      * @param view
      * @param idString
      * @return
      */
-    public static View findView(Context ctx, View view, String idString) {
-        int id = getResString(ctx, idString);
+    public static View findView(View view, String idString) {
+        int id = getResString(idString);
         return view.findViewById(id);
     }
 
-    public static float getDimen(Context ctx, int id) {
-        return ctx.getResources().getDimension(id);
-    }
 }

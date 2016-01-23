@@ -14,21 +14,19 @@ import android.widget.TextView;
 import eu.hithredin.spsdk.BuildConfig;
 import eu.hithredin.spsdk.common.UtilsOther;
 import eu.hithredin.spsdk.data.DeviceData;
+import hugo.weaving.DebugLog;
 
 /**
- * Base Fragment that all Fragments must extend
+ * Base Fragment that all Fragments should extend.
+ * It includes:
+ * - Helper to know if this is the first time the app resumes
+ * - Screen status analyser (landscape, ...)
  */
 public abstract class BaseFragment extends Fragment {
 
 private static final String LOG_TAG = BaseFragment.class.getSimpleName();
 
-    protected int currentQueryId = 0;
-    private static final String TAG = "BaseFragment";
     protected boolean firstResumed = true;
-    private ProgressBar spinnerCenterLoading;
-    private View errorLayout;
-    private View errorReloadBtn;
-    private TextView errorReloadText, errorTitle, errorMessage;
 
     public enum ScreenStatus {
         PHONE_LANDSCAPE, PHONE_PORTRAIT, TABLET_LANDSCAPE, TABLET_PORTRAIT, UNKNOWN
@@ -36,6 +34,10 @@ private static final String LOG_TAG = BaseFragment.class.getSimpleName();
 
     private ScreenStatus screenStatus;
 
+    /**
+     * Get infos about the actual screen state
+     * @return
+     */
     public ScreenStatus getScreenStatus(){
         if(screenStatus == null){
             screenStatus = getScreenStatus(DeviceData.get().getContext().getResources().getConfiguration());
@@ -43,6 +45,11 @@ private static final String LOG_TAG = BaseFragment.class.getSimpleName();
         return screenStatus;
     }
 
+    /**
+     * Get info about what would be the screen state with this new config
+     * @param config
+     * @return
+     */
     public static ScreenStatus getScreenStatus(Configuration config){
         int orientation = config.orientation;
 
@@ -67,15 +74,17 @@ private static final String LOG_TAG = BaseFragment.class.getSimpleName();
         super.onConfigurationChanged(newConfig);
 
         //We reinit here the Device Dimension static variable, because the fragment's onConfigurationChanged is called before the Application's onConfigurationChanged
-        //TODO Check that is is a Screen-related configChange
+        //TODO Check to avoid over call of this
         DeviceData.get().reinit();
-        screenStatus = getScreenStatus(newConfig);
-        runLater(new Runnable() {
-            @Override
-            public void run() {
-                actionOnOrientation(screenStatus);
-            }
-        });
+
+        if(screenStatus != (screenStatus = getScreenStatus(newConfig))) {
+            runLater(new Runnable() {
+                @Override
+                public void run() {
+                    actionOnOrientation(screenStatus);
+                }
+            });
+        }
     }
 
     protected void runLater(Runnable action){
@@ -103,7 +112,7 @@ private static final String LOG_TAG = BaseFragment.class.getSimpleName();
     }
 
     /**
-     * Remove runLater action. If null, remove all actions
+     * Remove runLater action. If action is null, remove all actions
      * @param action
      */
     protected void runLaterCancel(Runnable action){
@@ -119,111 +128,47 @@ private static final String LOG_TAG = BaseFragment.class.getSimpleName();
 
     private Handler laterRunner;
 
-    /**
-     * Show the error message
-     */
-    protected void showErrorMessage() {
-        //showErrorMessage(Wor.ding().error.noconnection, "", null); // TODO info error en debug
-    }
-
-    protected void showErrorMessage(View.OnClickListener reload) {
-        //showErrorMessage(Wor.ding().error.noconnection, "", reload); // TODO info error en debug
-    }
-
-    protected void showErrorMessage(String title, String message, View.OnClickListener reload) {
-        if (errorLayout == null) {
-            return;
-        }
-        errorLayout.setVisibility(View.VISIBLE);
-
-        if(reload == null){
-            errorReloadBtn.setVisibility(View.INVISIBLE);
-        } else{
-            errorReloadBtn.setVisibility(View.VISIBLE);
-            errorReloadBtn.setOnClickListener(reload);
-        }
-        errorTitle.setText(title);
-        errorMessage.setText(message);
-    }
 
     /**
-     * Hide the error Message
-     */
-    protected void hideErrorMessage() {
-        if (errorLayout != null) {
-            errorLayout.setVisibility(View.GONE);
-        }
-    }
-
-    protected void setCenterWaiting(boolean status) {
-        if (spinnerCenterLoading != null) {
-            spinnerCenterLoading.setVisibility(status ? View.VISIBLE : View.GONE);
-        }
-    }
-
-    /**
-     * All the code to find the view by Ids
+     * Load and find the needed view by Ids.
+     * It allows all abstracted class to load its views without access to OnViewCreated
      * @param root
      */
-    protected void assignViews(View root) {
-        /*
-        spinnerCenterLoading = (ProgressBar) root.findViewById(R.id.loading_indicator_center);
-        errorLayout = root.findViewById(R.id.layout_load_error);
-
-        errorReloadBtn = root.findViewById(R.id.btn_reload);
-        errorReloadText = (TextView) root.findViewById(R.id.btn_reload_text);
-        errorTitle = (TextView) root.findViewById(R.id.error_title);
-        errorMessage = (TextView) root.findViewById(R.id.error_message);*/
-    }
+    protected abstract void assignViews(View root);
 
     /**
-     * All the code to configure and fill the views with the first values
+     * All the code to configure and fill the views with the default values
+     * It allows all abstracted class to pre-fill its views without access to OnViewCreated
      * @param savedInstanceState
      * @param screenStatus
      */
-    protected void populateViews(Bundle savedInstanceState, ScreenStatus screenStatus){
-        if(errorLayout != null && errorReloadText != null && errorTitle != null){
-            try {
-                //errorReloadText.setText(Wor.ding().error.retry);
-                //errorTitle.setText(Wor.ding().error.noconnection);
-                //errorMessage.setText(Wor.ding().temp.offline_message);
-            }catch(Exception e){
-                e.printStackTrace();
-                Log.e("errorLayout", "Error wording not provided");
-            }
-        }
-    }
+    protected abstract void populateViews(Bundle savedInstanceState, ScreenStatus screenStatus);
 
     protected final void populateViews(Bundle savedInstanceState){
         populateViews(savedInstanceState, getScreenStatus());
     }
 
     /**
-     * If the activity is uni-directionnal this is never called (LivedActivityPortrait ...)<br/>
+     * If the activity has one direction this is never called<br/>
      * Else let the fragment decides what to do: nothing, some tricks, or relayout
      * @param screenStatus
      */
     protected abstract void actionOnOrientation(ScreenStatus screenStatus);
 
     @Override
+    /**
+     * NullPointer Exception en Android 4.0.3 sur le FragmentManager ligne 1542
+     */
     public void onSaveInstanceState(Bundle outState) {
         if (outState == null) {
-            // NullPointer Exception en Android 4.0.3 sur le FragmentManager ligne 1542
             outState = new Bundle();
         }
         outState.putString("NullPointer_SafeGuard", "no_crash");
         super.onSaveInstanceState(outState);
     }
 
-    /**
-     * @return a random Id to prevent older queries to buildHolder the view
-     */
-    protected int useQueryId() {
-        currentQueryId = UtilsOther.getRandomInt();
-        return currentQueryId;
-    }
-
     @Override
+    @DebugLog
     public void onPause() {
         super.onPause();
         firstResumed = false;
@@ -231,15 +176,9 @@ private static final String LOG_TAG = BaseFragment.class.getSimpleName();
     }
 
     @Override
+    @DebugLog
     public void onResume() {
         super.onResume();
-        if(BuildConfig.DEBUG){
-            if(this instanceof BaseLayoutFragment){
-                Log.d(LOG_TAG, "onResume Container MainFragment: " + getClass().getSimpleName());
-            } else{
-                Log.d(LOG_TAG, "onResume Functionnal Fragment:   " + getClass().getSimpleName());
-            }
-        }
     }
 
 }

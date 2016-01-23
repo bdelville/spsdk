@@ -6,13 +6,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
 
-import eu.hithredin.spsdk.R;
-
 /**
  * A Fragment that is directly displayed in a Activity as main fragment.
- * It is barely a container of other fragments, most of the time. Its only view its handle is the ActionBar
+ * It is barely a container of other fragments, most of the time. The only view it does handle is the ActionBar/Toolbar
  */
-public class BaseLayoutFragment extends BaseFragment {
+public class BaseLayoutFragment extends BaseLoadFragment {
+
+    private static final String LOG_TAG = BaseLayoutFragment.class.getSimpleName();
 
     @Override
     protected void assignViews(View root) {
@@ -36,7 +36,9 @@ public class BaseLayoutFragment extends BaseFragment {
 
     /**
      *
-     * @param fragment
+     * @param fragment Fragment to add to the layoutFragment
+     * @param args Arguments to give to the fragment. If null, we will provide the activity intent's extras
+     * @param id_container id of the container for this fragment
      */
     protected void setContentFragment(Fragment fragment, Bundle args, int id_container){
         //Set Arguments
@@ -48,20 +50,16 @@ public class BaseLayoutFragment extends BaseFragment {
 
         //Show the fragment
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(id_container, fragment, "secondFragment");
+        transaction.replace(id_container, fragment, ""+id_container);
         transaction.commit();
     }
 
     /**
-     * When the activity is asked to display the same MainFragment: it just update its arguments
+     * When the activity is asked to display the same MainFragment: it can just update its arguments
      * @param argumentsRuntime
      */
     public void setArgumentsRuntime(Bundle argumentsRuntime) {
         getArguments().putAll(argumentsRuntime);
         populateViews(null, getScreenStatus());
-    }
-
-    public boolean goBack(){
-        return false;
     }
 }
