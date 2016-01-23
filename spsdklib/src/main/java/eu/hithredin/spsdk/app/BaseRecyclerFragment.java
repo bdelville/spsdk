@@ -8,4 +8,6 @@ public abstract class BaseRecyclerFragment extends BaseFragment {
 
     //TODO Read Google documentation and start from here (while just keeping in mind my old structure which is similar)
 
+    //TODO Integrate ion queries with minimum proxy
+
 }
