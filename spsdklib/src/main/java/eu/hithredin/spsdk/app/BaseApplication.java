@@ -15,6 +15,7 @@ import de.greenrobot.event.EventBus;
 import eu.hithredin.spsdk.BuildConfig;
 import eu.hithredin.spsdk.common.event.OrientationAppChanged;
 import eu.hithredin.spsdk.data.DeviceData;
+import hugo.weaving.DebugLog;
 
 /**
  * Created by bdelville on 10/07/2014.
@@ -42,11 +43,12 @@ public abstract class BaseApplication extends Application {
     }
 
     @Override
+    @DebugLog
     public void onCreate() {
         super.onCreate();
         //Fabric.with(this, new Crashlytics());
         app = this;
-        DeviceData.get().init(this, BuildConfig.DEBUG);
+        DeviceData.get().init(this);
 
         try {
             PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);

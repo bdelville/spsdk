@@ -23,6 +23,7 @@ public class BaseLifeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         RFE_created = true;
+        BaseApplication.setCurrentActivity(this);
     }
 
     @Override

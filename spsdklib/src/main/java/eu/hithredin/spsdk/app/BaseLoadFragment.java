@@ -6,9 +6,15 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.List;
+
+import eu.hithredin.spsdk.BuildConfig;
 import eu.hithredin.spsdk.R;
+import eu.hithredin.spsdk.common.UtilsOther;
 import eu.hithredin.spsdk.common.UtilsString;
 import eu.hithredin.spsdk.data.DeviceData;
+import eu.hithredin.spsdk.query.ResultInfo;
+import hugo.weaving.DebugLog;
 
 /**
  * Base Fragment that contains helpers needed to display loading, error, empty statuses
@@ -19,36 +25,40 @@ public abstract class BaseLoadFragment extends BaseFragment {
     private View errorLayout;
     private View errorReloadAction;
     private TextView errorReloadText, errorTitle, errorText;
+    private int loadQueryId;
 
     /**
      * Show the standard error message
      */
     protected void showError() {
-        showError(UtilsString.string(R.string.info_error), "", null);
+        showError(UtilsString.string(R.string.info_error), "", false);
     }
 
-    protected void showIoError(View.OnClickListener reload) {
-        showError(UtilsString.string(R.string.info_error_io), "", reload);
+    protected void showIoError(boolean showReload) {
+        showError(UtilsString.string(R.string.info_error_io), "", showReload);
     }
 
     protected void showEmpty(){
-        showError(UtilsString.string(R.string.info_data_empty), "", null);
+        showError(UtilsString.string(R.string.info_data_empty), "", false);
     }
 
-    protected void showError(String title, String message, View.OnClickListener reload) {
+    protected void showError(String title, String message, boolean showReload) {
         if (errorLayout == null) {
             return;
         }
         errorLayout.setVisibility(View.VISIBLE);
 
-        if(reload == null){
+        if(!showReload){
             errorReloadAction.setVisibility(View.INVISIBLE);
         } else{
             errorReloadAction.setVisibility(View.VISIBLE);
-            errorReloadAction.setOnClickListener(reload);
         }
         errorTitle.setText(title);
         errorText.setText(message);
+    }
+
+    protected void setReloadAction(View.OnClickListener reload){
+        errorReloadAction.setOnClickListener(reload);
     }
 
     /**
@@ -91,4 +101,77 @@ public abstract class BaseLoadFragment extends BaseFragment {
         }
     }
 
+
+    protected int pageLoadCount;
+
+    /**
+     * Manage the pagination of the list
+     *
+     * @param isNext
+     * @return the new page to load if iNext is true, the first page if it is false
+     */
+    protected int getPageCount(boolean isNext) {
+        return isNext ? ++pageLoadCount : (pageLoadCount = 1);
+    }
+
+    /**
+     * @return a random Id to prevent older queries from updating the view
+     */
+    protected int useQueryId() {
+        //If called, it means that we start a new query to buildHolder the list
+        hideError();
+        setIsLoading(true);
+        loadQueryId = UtilsOther.getRandomInt();
+        return loadQueryId;
+    }
+
+    /**
+     * MUST Be called after each request success
+     *
+     * @param idQuery
+     * @return
+     */
+    protected boolean canProcess(int idQuery) {
+        return getActivity() != null && idQuery == loadQueryId && !isDetached();
+    }
+
+    /**
+     * A generic function to handle error and success of simple queries
+     */
+    @DebugLog
+    public void queryFinished(int idQuery, ResultInfo resultInfo, Object datas) {
+        if (!canProcess(idQuery)) {
+            return;
+        }
+        setIsLoading(false);
+
+        if (resultInfo.isSuccess() && datas != null) {
+            onQueryResultSuccess();
+
+        } else {
+            // An error has occured
+            onQueryError(resultInfo);
+        }
+    }
+
+    /**
+     * Handle the query result
+     */
+    protected void onQueryResultSuccess() {
+    }
+
+    /**
+     * Handle the query error behaviour
+     * @param resultInfo
+     */
+    protected void onQueryError(ResultInfo resultInfo) {
+        switch (resultInfo.getCodeQuery()) {
+            case NETWORK_ERROR:
+                showIoError(true);
+                break;
+            default:
+                showError();
+                break;
+        }
+    }
 }

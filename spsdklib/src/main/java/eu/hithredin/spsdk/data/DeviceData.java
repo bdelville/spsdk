@@ -15,6 +15,7 @@ import android.view.WindowManager;
 
 import java.util.logging.Logger;
 
+import eu.hithredin.spsdk.BuildConfig;
 import hugo.weaving.DebugLog;
 
 
@@ -162,8 +163,8 @@ public class DeviceData {
      *
      * @param app
      */
-    public void init(Application app, boolean debug) {
-        DEBUG = debug;
+    public void init(Application app) {
+        DEBUG = BuildConfig.DEBUG;
         defaultContext = app.getApplicationContext();
         preferences = PreferenceManager.getDefaultSharedPreferences(defaultContext);
         reinit();

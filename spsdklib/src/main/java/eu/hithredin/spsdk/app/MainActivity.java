@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import eu.hithredin.spsdk.R;
 import eu.hithredin.spsdk.common.Constant;
+import eu.hithredin.spsdk.data.DeviceData;
+
 import android.support.v4.app.FragmentTransaction;
 
 /**
@@ -13,6 +15,12 @@ import android.support.v4.app.FragmentTransaction;
  * Activity: The functionnality that the user wants. Does contains only one LayoutFragment.
  * LayoutFragment : Arrange different or one fragment according to the device state (tablet, landscape, ...)
  * Fragment: Single functionnality fragment
+ *
+ * Advantages of this structure:
+ * - The Content fragment will be very flexible and autonomous to be used elsewhere easily later on.
+ * - The Layout Fragment is kept simple, you will not lose a lot of code by recoding a new one
+ * - Activity is code-free, while would we need to create another class for nothing
+ * - Only one context type, the Fragment, we do not need to wonder if I need a Fragment or Activity
  */
 public class MainActivity extends BaseLifeActivity {
 
@@ -28,9 +36,9 @@ public class MainActivity extends BaseLifeActivity {
      * @param args
      */
     public static void openPage(Class clazzFragment, Bundle args){
-        Intent intent = new Intent();
-        intent.getExtras().putAll(args);
+        Intent intent = new Intent(DeviceData.ctx(), MainActivity.class);
         intent.putExtra(Constant.IntentPageFragment, clazzFragment);
+        intent.getExtras().putAll(args);
         BaseApplication.getCurrentActivity().startActivity(intent);
     }
 

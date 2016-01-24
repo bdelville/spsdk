@@ -10,7 +10,7 @@ import android.view.View;
  * A Fragment that is directly displayed in a Activity as main fragment.
  * It is barely a container of other fragments, most of the time. The only view it does handle is the ActionBar/Toolbar
  */
-public class BaseLayoutFragment extends BaseLoadFragment {
+public abstract class BaseLayoutFragment extends BaseLoadFragment {
 
     private static final String LOG_TAG = BaseLayoutFragment.class.getSimpleName();
 

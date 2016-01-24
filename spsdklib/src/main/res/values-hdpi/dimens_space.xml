@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- SPACES -->
+    <dimen name="space_xsmall">2dip</dimen>
+    <dimen name="space_small">3dip</dimen>
+    <dimen name="space_medium">8dip</dimen>
+    <dimen name="space_large">15dip</dimen>
+    <dimen name="space_xlarge">18dip</dimen>
+    <dimen name="space_xxlarge">20dip</dimen>
+</resources>
