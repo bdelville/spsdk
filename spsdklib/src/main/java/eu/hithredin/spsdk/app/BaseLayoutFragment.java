@@ -8,7 +8,8 @@ import android.view.View;
 
 /**
  * A Fragment that is directly displayed in a Activity as main fragment.
- * It is barely a container of other fragments, most of the time. The only view it does handle is the ActionBar/Toolbar
+ * It is barely a container of other fragments, most of the time.
+ * Used when the base activity is too complex, and here lies only the logic of putting functionnals fragments togethers
  */
 public abstract class BaseLayoutFragment extends BaseLoadFragment {
 

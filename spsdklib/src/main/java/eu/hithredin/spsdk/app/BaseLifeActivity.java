@@ -2,12 +2,15 @@ package eu.hithredin.spsdk.app;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
+import eu.hithredin.spsdk.R;
+
 /**
- * Created by benoit on 1/6/16.
- *
- * Helper to know when the activity resumes from the exterior or within the app
+ * Helper to know when the activity resumes from the exterior or within the app.
+ * Plus some base Activity helper
  */
 public class BaseLifeActivity extends AppCompatActivity {
 
@@ -67,5 +70,17 @@ public class BaseLifeActivity extends AppCompatActivity {
         RFE_paused = RFE_finished = RFE_created = false;
     }
 
+
+    /**
+     * Set the LayoutFragment to the activity. Can be overriden for custom animations
+     * @param bmf
+     * @param isOnStack
+     */
+    protected void setFragment(Fragment bmf, boolean isOnStack) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_layout, bmf, "MainFragment");
+        transaction.commit();
+        //EventBus.getDefault().post(new MainFragmentChangedEvent(bmf.getClass()));
+    }
 
 }
