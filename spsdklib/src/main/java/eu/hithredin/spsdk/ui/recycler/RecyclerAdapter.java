@@ -1,7 +1,7 @@
 package eu.hithredin.spsdk.ui.recycler;
 
+import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +14,7 @@ import java.util.List;
  * Custom Generic adapter for REcyclerView.
  * Abstract the type of cells resolution, inflate layout, while keeping a dynamic management (not everything configured)
  */
-public class RecyclerAdapter<T> extends RecyclerView.Adapter<ReCellHolder>  {
+public class RecyclerAdapter<T> extends RecyclerView.Adapter<ReCellHolder> {
 
     private static final String LOG_TAG = RecyclerAdapter.class.getSimpleName();
 
@@ -29,14 +29,15 @@ public class RecyclerAdapter<T> extends RecyclerView.Adapter<ReCellHolder>  {
     protected List<T> objects;
     protected List<T> objectsWithDecors;
 
-    public List<T> getDatas(){
+    public List<T> getDatas() {
         return objects;
     }
 
 
-    public RecyclerAdapter(){
+    public RecyclerAdapter() {
         this(null);
     }
+
 
     public RecyclerAdapter(List<T> data) {
         super();
@@ -54,13 +55,22 @@ public class RecyclerAdapter<T> extends RecyclerView.Adapter<ReCellHolder>  {
     public ReCellHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         int layout = cellController.getLayoutId(viewType);
         View view;
-        if(layout > 0) {
-            view = LayoutInflater.from(viewGroup.getContext()).inflate(layout, viewGroup, false);
-        } else{
+        ViewDataBinding vdb = null;
+
+        if (layout > 0) {
+            LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+            vdb = cellController.getViewDataBinding(viewType, inflater, viewGroup, layout);
+            if (vdb != null) {
+                view = vdb.getRoot();
+            } else {
+                view = inflater.inflate(layout, viewGroup, false);
+            }
+        } else {
             view = new RelativeLayout(viewGroup.getContext());
         }
 
         ReCellHolder holder = cellController.getHolder(viewType, view);
+        holder.setViewDataBinding(vdb);
         return holder;
     }
 
@@ -100,11 +110,11 @@ public class RecyclerAdapter<T> extends RecyclerView.Adapter<ReCellHolder>  {
         notifyItemRangeInserted(newPosition, datas.size());
     }
 
-    public void setDatasNoNotify(List<T> datas){
+    public void setDatasNoNotify(List<T> datas) {
         objects = datas;
     }
 
-    public void clear(){
+    public void clear() {
         int lastSize = objects.size();
         objects.clear();
         notifyItemRangeRemoved(0, lastSize);

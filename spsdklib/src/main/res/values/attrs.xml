@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AdvanceImageView">
+        <attr name="focus_type" format="integer">
+            <enum name="normal" value="0" />
+            <enum name="focusable" value="1" />
+            <enum name="no_focus_state" value="2" />
+        </attr>
+    </declare-styleable>
+</resources>

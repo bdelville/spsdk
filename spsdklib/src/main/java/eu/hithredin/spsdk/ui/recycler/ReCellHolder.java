@@ -1,6 +1,8 @@
 package eu.hithredin.spsdk.ui.recycler;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,6 +17,11 @@ public abstract class ReCellHolder<T> extends RecyclerView.ViewHolder implements
     protected int position;
     protected View view;
     private Object tag;
+    protected ViewDataBinding viewDataBinding;
+
+    public void setViewDataBinding(ViewDataBinding viewDataBinding) {
+        this.viewDataBinding = viewDataBinding;
+    }
 
     public Object getTag() {
         return tag;
@@ -44,6 +51,10 @@ public abstract class ReCellHolder<T> extends RecyclerView.ViewHolder implements
 
     public View getView() {
         return view;
+    }
+
+    protected Resources resources(){
+        return view.getResources();
     }
 
 }

@@ -86,4 +86,26 @@ public class UtilsOther {
         return DATE_RANGE.after;
     }
 
+    public static int daysPassed(Date date) {
+        if (date == null) {
+            return 0;
+        }
+
+        // Check if yesterday, today, tomorrow
+        Calendar dateFilter = Calendar.getInstance();
+        dateFilter.setTime(date);
+        Calendar now = Calendar.getInstance();
+
+        int days;
+        // Si on est dans la même année
+        if (now.get(Calendar.YEAR) == dateFilter.get(Calendar.YEAR)) {
+            // On verifie la différence de jours entre les 2 dates
+            days = dateFilter.get(Calendar.DAY_OF_YEAR) - now.get(Calendar.DAY_OF_YEAR);
+        } else {
+            days = dateFilter.get(Calendar.DAY_OF_YEAR) + (now.getActualMaximum(Calendar.DAY_OF_YEAR) - now.get(Calendar.DAY_OF_YEAR));
+        }
+
+        return days;
+    }
+
 }

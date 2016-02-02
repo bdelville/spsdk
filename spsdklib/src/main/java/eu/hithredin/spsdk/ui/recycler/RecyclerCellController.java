@@ -1,6 +1,10 @@
 package eu.hithredin.spsdk.ui.recycler;
 
+import android.databinding.ViewDataBinding;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 /**
  * Created by SEDONAINTRA\bdelville on 17/03/15.
@@ -38,6 +42,28 @@ public abstract class RecyclerCellController<T> {
      * @param cell
      */
     public void onCellFilled(int position, final View cell) {
+
+    }
+
+    /**
+     * Don't forget to setup the databinding inside fillCell
+     * @param holderType
+     * @param inflater
+     * @param root
+     * @param layout
+     * @return null is not DataBinding
+     */
+    public ViewDataBinding getViewDataBinding(int holderType, LayoutInflater inflater, @Nullable ViewGroup root, int layout){
+        //MyListItemBinding.inflate(inflater, layout, viewGroup, false);
+        return null;
+    }
+
+    /**
+     * Set the dataBinding here avoid the creation of the CellHolder
+     * @param vdb
+     * @param data
+     */
+    public void setViewDataBinding(ViewDataBinding vdb, T data){
 
     }
 }

@@ -38,7 +38,6 @@ public abstract class BaseRecyclerFragment<T> extends BaseLoadFragment implement
         super.assignViews(root);
         recyclerView = (RecyclerView) root.findViewById(R.id.recyclerview);
         swipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.activity_main_swipe_refresh_layout);
-
     }
 
 
@@ -96,8 +95,8 @@ public abstract class BaseRecyclerFragment<T> extends BaseLoadFragment implement
     public void onRefresh() {
         adapter.clear();
         pageLoadCount = 0;
-        loadQuery();
         setIsLoading(false);
+        loadQuery();
     }
 
     private View.OnClickListener clickReload = new View.OnClickListener() {
@@ -164,7 +163,7 @@ public abstract class BaseRecyclerFragment<T> extends BaseLoadFragment implement
      */
     protected boolean onQueryResultEmpty(boolean listIsEmpty) {
         if (listIsEmpty) {
-            showError();
+            showEmpty();
         }
         return false;
     }
