@@ -8,8 +8,21 @@
     <TextView android:id="@+id/info_title" android:layout_width="match_parent" android:layout_height="match_parent"></TextView>
     <TextView android:id="@+id/info_text" android:layout_width="match_parent" android:layout_height="match_parent"></TextView>
     <TextView android:id="@+id/info_reload_text" android:layout_width="match_parent" android:layout_height="match_parent"></TextView>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+
+    <android.support.design.widget.TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/tablayout"></android.support.design.widget.TableLayout>
+
+    <android.support.v4.view.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/viewpager">
+
+    </android.support.v4.view.ViewPager>
 </RelativeLayout>
