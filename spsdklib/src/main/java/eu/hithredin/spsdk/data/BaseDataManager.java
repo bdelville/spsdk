@@ -4,8 +4,15 @@ import android.content.SharedPreferences;
 import android.provider.ContactsContract;
 
 import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
+import com.google.repacked.apache.commons.io.IOUtils;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.nio.charset.Charset;
 
 /**
  * Created by benoit on 1/6/16.
@@ -59,6 +66,24 @@ public abstract class BaseDataManager {
         String data = DeviceData.get().getPreferences().getString(key, null);
         if (data != null) {
             return new Gson().fromJson(data, typeToken);
+        }
+        return null;
+    }
+
+    protected <T> T retrieveRaw(Type typeToken, int rawId) {
+        try {
+            InputStream is = DeviceData.ctx().getResources().openRawResource(rawId);
+            /*BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            String s = "";
+            String line;
+            while ((line = reader.readLine()) != null) {
+                s+= line+"\n";
+            }
+            return new Gson().fromJson(s, typeToken);*/
+            return new Gson().fromJson(new InputStreamReader(is), typeToken);
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
         return null;
     }
