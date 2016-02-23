@@ -14,6 +14,9 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 
+import eu.hithredin.spsdk.BuildConfig;
+import eu.hithredin.spsdk.common.UtilsAndroid;
+
 /**
  * Created by benoit on 1/6/16.
  * Helper to (de)serialize any object and saved it into local memory.
@@ -21,6 +24,25 @@ import java.nio.charset.Charset;
  * (such as saveCart(Cart cart); ) 
  */
 public abstract class BaseDataManager {
+
+    private boolean isFirstLaunch = false;
+    protected String lastVersion;
+
+    public String getLastVersion(){
+        return lastVersion;
+    }
+
+    protected BaseDataManager(){
+        lastVersion = retrieve("VERSION_CODE");
+        if(lastVersion == null){
+            isFirstLaunch = true;
+        }
+
+        String version = DeviceData.ctx().getPackageName();
+        if(!version.equals(lastVersion)){
+            save(DeviceData.ctx().getPackageName(), "VERSION_CODE");
+        }
+    }
 
     /**
      * Save a object to memory with a default key. It may exist only one saved instance of this class

@@ -1,19 +1,15 @@
 package eu.hithredin.spsdk.app;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.util.List;
-
-import eu.hithredin.spsdk.BuildConfig;
 import eu.hithredin.spsdk.R;
 import eu.hithredin.spsdk.common.UtilsOther;
 import eu.hithredin.spsdk.common.UtilsString;
-import eu.hithredin.spsdk.data.DeviceData;
 import eu.hithredin.spsdk.query.ResultInfo;
+import eu.hithredin.spsdk.ui.ScreenStatus;
 import hugo.weaving.DebugLog;
 
 /**
@@ -58,7 +54,9 @@ public abstract class BaseLoadFragment extends BaseFragment {
     }
 
     protected void setReloadAction(View.OnClickListener reload){
-        errorReloadAction.setOnClickListener(reload);
+        if(errorReloadAction != null){
+            errorReloadAction.setOnClickListener(reload);
+        }
     }
 
     /**

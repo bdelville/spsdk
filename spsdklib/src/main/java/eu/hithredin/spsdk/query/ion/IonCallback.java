@@ -53,7 +53,7 @@ public abstract class IonCallback<T, E> {
         ResultInfo ri = new ResultInfo();
         ri.setTag(tag);
 
-        if(r.getHeaders() != null) {
+        if(r!=null && r.getHeaders() != null) {
             ri.setHttpCode(r.getHeaders().code());
         }
         return ri;

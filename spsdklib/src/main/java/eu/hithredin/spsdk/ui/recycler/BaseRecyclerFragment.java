@@ -2,7 +2,6 @@ package eu.hithredin.spsdk.ui.recycler;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +12,7 @@ import java.util.List;
 
 import eu.hithredin.spsdk.R;
 import eu.hithredin.spsdk.app.BaseLoadFragment;
+import eu.hithredin.spsdk.ui.ScreenStatus;
 import eu.hithredin.spsdk.query.ResultInfo;
 import hugo.weaving.DebugLog;
 
@@ -79,7 +79,7 @@ public abstract class BaseRecyclerFragment<T> extends BaseLoadFragment implement
         View root = inflater.inflate(fragmentLayout(), container, false);
         assignViews(root);
         populateViews(savedInstanceState, getScreenStatus());
-        loadQuery();
+        loadListQuery();
         return root;
     }
 
@@ -96,7 +96,7 @@ public abstract class BaseRecyclerFragment<T> extends BaseLoadFragment implement
         adapter.clear();
         pageLoadCount = 0;
         setIsLoading(false);
-        loadQuery();
+        loadListQuery();
     }
 
     private View.OnClickListener clickReload = new View.OnClickListener() {
@@ -105,7 +105,7 @@ public abstract class BaseRecyclerFragment<T> extends BaseLoadFragment implement
             //Restart from scratch
             adapter.clear();
             pageLoadCount = 0;
-            loadQuery();
+            loadListQuery();
         }
     };
 
@@ -113,7 +113,7 @@ public abstract class BaseRecyclerFragment<T> extends BaseLoadFragment implement
     /**
      * Call when you can start/continue the data query
      */
-    protected abstract void loadQuery();
+    protected abstract void loadListQuery();
 
     /**
      * A generic function to handle error and fill the recyclerview

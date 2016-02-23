@@ -5,15 +5,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 
-import eu.hithredin.spsdk.BuildConfig;
-import eu.hithredin.spsdk.common.UtilsOther;
 import eu.hithredin.spsdk.data.DeviceData;
+import eu.hithredin.spsdk.ui.ScreenStatus;
 import hugo.weaving.DebugLog;
 
 /**
@@ -27,10 +23,6 @@ public abstract class BaseFragment extends Fragment {
 private static final String LOG_TAG = BaseFragment.class.getSimpleName();
 
     protected boolean firstResumed = true;
-
-    public enum ScreenStatus {
-        PHONE_LANDSCAPE, PHONE_PORTRAIT, TABLET_LANDSCAPE, TABLET_PORTRAIT, UNKNOWN
-    }
 
     private ScreenStatus screenStatus;
 

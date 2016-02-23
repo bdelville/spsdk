@@ -82,8 +82,12 @@ public class IonJsonCallback<T, E> extends IonCallback<T, E> {
             e.printStackTrace();
 
             try {
-                errordata = parseData(parserError, result.getResult());
-                ri.setCodeQuery(ResultInfo.CODE_QUERY.SERVER_ERROR);
+                if(result != null){
+                    errordata = parseData(parserError, result.getResult());
+                    ri.setCodeQuery(ResultInfo.CODE_QUERY.SERVER_ERROR);
+                }
+                ri.setCodeQuery(ResultInfo.CODE_QUERY.NETWORK_ERROR);
+
             } catch (Exception ex) {
                 ri.setCodeQuery(ResultInfo.CODE_QUERY.NETWORK_ERROR);
                 ex.printStackTrace();
@@ -97,7 +101,7 @@ public class IonJsonCallback<T, E> extends IonCallback<T, E> {
     }
 
     public interface StringPreprocessor {
-        public String preprocess(String s);
+        String preprocess(String s);
     }
 
     public void setPreprocessor(StringPreprocessor preprocessor) {

@@ -5,6 +5,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
+import eu.hithredin.spsdk.ui.ScreenStatus;
+
 
 /**
  * A Fragment that is directly displayed in a Activity as main fragment.

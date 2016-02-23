@@ -1,12 +1,15 @@
 package eu.hithredin.spsdk.app;
 
 import android.annotation.SuppressLint;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import eu.hithredin.spsdk.R;
+import eu.hithredin.spsdk.data.DeviceData;
+import eu.hithredin.spsdk.ui.ScreenStatus;
 
 /**
  * Helper to know when the activity resumes from the exterior or within the app.
@@ -19,6 +22,10 @@ public class BaseLifeActivity extends AppCompatActivity {
 
     // Take care to call this before calling onResume()
     protected boolean isFirstResume = true;
+
+    public boolean isActive(){
+        return !isPaused;
+    }
 
 
     @SuppressLint("NewApi")
@@ -83,4 +90,44 @@ public class BaseLifeActivity extends AppCompatActivity {
         //EventBus.getDefault().post(new MainFragmentChangedEvent(bmf.getClass()));
     }
 
+
+    protected void assignViews() {
+
+    }
+
+
+    protected void populateViews(ScreenStatus status) {
+    }
+
+    /**
+     * Get info about what would be the screen state with this new config
+     * @param config
+     * @return
+     */
+    public static ScreenStatus getScreenStatus(Configuration config){
+        int orientation = config.orientation;
+
+        if(DeviceData.get().isTablet()){
+            if(orientation == Configuration.ORIENTATION_PORTRAIT){
+                return ScreenStatus.TABLET_PORTRAIT;
+            } else if(orientation == Configuration.ORIENTATION_LANDSCAPE){
+                return ScreenStatus.TABLET_LANDSCAPE;
+            }
+        } else {
+            if(orientation == Configuration.ORIENTATION_PORTRAIT){
+                return ScreenStatus.PHONE_PORTRAIT;
+            } else if(orientation == Configuration.ORIENTATION_LANDSCAPE){
+                return ScreenStatus.PHONE_LANDSCAPE;
+            }
+        }
+        return ScreenStatus.UNKNOWN;
+    }
+
+    /**
+     * Get infos about the actual screen state
+     * @return
+     */
+    public ScreenStatus getScreenStatus(){
+        return getScreenStatus(getResources().getConfiguration());
+    }
 }
