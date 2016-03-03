@@ -1,5 +1,6 @@
 package eu.hithredin.spsdk.app;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 
+import de.greenrobot.event.EventBus;
 import eu.hithredin.spsdk.data.DeviceData;
 import eu.hithredin.spsdk.ui.ScreenStatus;
 import hugo.weaving.DebugLog;
@@ -25,6 +27,24 @@ private static final String LOG_TAG = BaseFragment.class.getSimpleName();
     protected boolean firstResumed = true;
 
     private ScreenStatus screenStatus;
+
+    protected boolean isBusConnected = false;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if(isBusConnected){
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if(isBusConnected){
+            EventBus.getDefault().unregister(this);
+        }
+    }
 
     /**
      * Get infos about the actual screen state

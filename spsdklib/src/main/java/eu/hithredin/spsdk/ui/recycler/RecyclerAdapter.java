@@ -110,6 +110,13 @@ public class RecyclerAdapter<T> extends RecyclerView.Adapter<ReCellHolder> {
         notifyItemRangeInserted(newPosition, datas.size());
     }
 
+    public void addData(T data) {
+        int newPosition = objects.size();
+        objects.add(data);
+        notifyItemRangeInserted(newPosition, 1);
+    }
+
+
     public void setDatasNoNotify(List<T> datas) {
         objects = datas;
     }

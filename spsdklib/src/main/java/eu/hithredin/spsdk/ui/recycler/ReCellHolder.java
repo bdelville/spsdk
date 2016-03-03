@@ -57,4 +57,8 @@ public abstract class ReCellHolder<T> extends RecyclerView.ViewHolder implements
         return view.getResources();
     }
 
+    public T getData(){
+        return data;
+    }
+
 }

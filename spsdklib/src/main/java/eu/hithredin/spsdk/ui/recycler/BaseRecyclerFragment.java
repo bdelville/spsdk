@@ -51,7 +51,7 @@ public abstract class BaseRecyclerFragment<T> extends BaseLoadFragment implement
         recyclerView.setAdapter(adapter);
 
         if (swipeRefreshLayout != null) {
-            swipeRefreshLayout.setOnRefreshListener(this);
+            swipeRefreshLayout.setOnRefreshListener(this);;
         }
 
         setReloadAction(clickReload);
@@ -67,7 +67,7 @@ public abstract class BaseRecyclerFragment<T> extends BaseLoadFragment implement
     }
 
     /**
-     *
+     * Use your own layout, or fragment_recycler_refresh_base to enable SwipeRefresh
      * @return the layout id for this fragment
      */
     protected int fragmentLayout() {
