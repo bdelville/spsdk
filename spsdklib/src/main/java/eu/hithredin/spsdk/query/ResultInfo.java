@@ -22,6 +22,13 @@ package eu.hithredin.spsdk.query;
  */
 public class ResultInfo {
 
+    public static ResultInfo getSuccess() {
+        ResultInfo ri = new ResultInfo();
+        ri.statusResult = ORDER_RESULT.first;
+        ri.codeQuery = CODE_QUERY.SUCCESS;
+        return ri;
+    }
+
     /**
      * Order of this result. Sometime the callback is called twice if cache (first) is sent before data query (last)
      */

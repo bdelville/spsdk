@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.pm.PackageInfo;
 import android.content.res.Configuration;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
@@ -101,7 +102,7 @@ public abstract class BaseApplication extends Application {
         }
     }
 
-    protected Handler laterRunner = new Handler(){
+    protected Handler laterRunner = new Handler(Looper.getMainLooper()){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);

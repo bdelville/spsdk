@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -29,11 +30,12 @@ private static final String LOG_TAG = BaseFragment.class.getSimpleName();
     private ScreenStatus screenStatus;
 
     protected boolean isBusConnected = false;
+    protected boolean isBusAutoDisconnected = false;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if(isBusConnected){
+        if(isBusConnected && (isBusAutoDisconnected || firstResumed)){
             EventBus.getDefault().register(this);
         }
     }
@@ -41,7 +43,7 @@ private static final String LOG_TAG = BaseFragment.class.getSimpleName();
     @Override
     public void onDetach() {
         super.onDetach();
-        if(isBusConnected){
+        if(isBusConnected && isBusAutoDisconnected) {
             EventBus.getDefault().unregister(this);
         }
     }
@@ -105,7 +107,7 @@ private static final String LOG_TAG = BaseFragment.class.getSimpleName();
 
     protected void runLater(Runnable action, long timer){
         if(laterRunner == null){
-            laterRunner = new Handler(){
+            laterRunner = new Handler(Looper.getMainLooper()){
                 @Override
                 public void handleMessage(Message msg) {
                     super.handleMessage(msg);

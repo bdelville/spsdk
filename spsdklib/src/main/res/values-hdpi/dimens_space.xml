@@ -6,6 +6,6 @@
     <dimen name="space_small">3dip</dimen>
     <dimen name="space_medium">8dip</dimen>
     <dimen name="space_large">15dip</dimen>
-    <dimen name="space_xlarge">18dip</dimen>
-    <dimen name="space_xxlarge">20dip</dimen>
+    <dimen name="space_xlarge">20dip</dimen>
+    <dimen name="space_xxlarge">30dip</dimen>
 </resources>

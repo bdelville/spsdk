@@ -105,7 +105,7 @@ public class UtilsOther {
             days = dateFilter.get(Calendar.DAY_OF_YEAR) + (now.getActualMaximum(Calendar.DAY_OF_YEAR) - now.get(Calendar.DAY_OF_YEAR));
         }
 
-        return days;
+        return -days;
     }
 
 }

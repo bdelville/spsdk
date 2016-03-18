@@ -54,6 +54,11 @@ public class UtilsView {
         return DeviceData.ctx().getResources().getIdentifier(name, "id", DeviceData.ctx().getPackageName());
     }
 
+    public static int getResDrawable(String name){
+        return DeviceData.ctx().getResources().getIdentifier(name, "drawable", DeviceData.ctx().getPackageName());
+    }
+
+
     /**
      *
      * @param view

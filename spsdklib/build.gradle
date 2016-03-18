@@ -40,11 +40,14 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.+'
     compile 'com.android.support:recyclerview-v7:23.+'
     compile 'com.android.support:support-v4:23.+'
+    compile 'com.android.support:design:23.+'
 
+    //Bus communcation
     compile 'de.greenrobot:eventbus:2.4.0'
+
+    //Network data loader
     compile 'com.koushikdutta.ion:ion:2.+'
 
-
-    compile 'com.android.support:design:23.+'
+    //Image Loader
     compile 'com.github.bumptech.glide:glide:3.6.1'
 }

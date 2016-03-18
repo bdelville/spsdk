@@ -236,6 +236,10 @@ public class DeviceData {
         return get().getContext();
     }
 
+    public static Resources res(){
+        return get().getContext().getResources();
+    }
+
     public SharedPreferences getPreferences() {
         return preferences;
     }
