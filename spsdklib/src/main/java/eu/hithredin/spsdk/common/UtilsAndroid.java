@@ -19,6 +19,17 @@ public class UtilsAndroid {
     private static final String LOG_TAG = UtilsAndroid.class.getSimpleName();
 
     /**
+     * Open the browser to an URL
+     * @param ctx
+     * @param url
+     */
+    public static void openUrlLink(Context ctx, String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        ctx.startActivity(intent);
+    }
+
+
+    /**
      * Shortcut to get ApplicationInfo for a given package
      * @param packageName
      * @return

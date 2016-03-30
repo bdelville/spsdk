@@ -14,27 +14,26 @@ import java.util.Random;
 public class UtilsOther {
 
 
-    public static void openUrlLink(Context ctx, String url) {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        ctx.startActivity(intent);
-    }
-
     private static Random r;
 
-    public static int getRandomInt() {
+    /**
+     * Get a prebuilt random class
+     * @return
+     */
+    public static Random random(){
         if (r == null) {
             r = new Random();
             r.setSeed((new Date()).getTime());
         }
-        return r.nextInt();
+        return r;
+    }
+
+    public static int getRandomInt() {
+        return random().nextInt();
     }
 
     public static boolean getRandomBool() {
-        if (r == null) {
-            r = new Random();
-            r.setSeed((new Date()).getTime());
-        }
-        return r.nextBoolean();
+        return random().nextBoolean();
     }
 
     public enum DATE_RANGE {
@@ -107,5 +106,7 @@ public class UtilsOther {
 
         return -days;
     }
+
+
 
 }

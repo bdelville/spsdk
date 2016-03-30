@@ -11,16 +11,18 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import eu.hithredin.spsdk.R;
+import eu.hithredin.spsdk.app.BaseLoadDialog;
 import eu.hithredin.spsdk.app.BaseLoadFragment;
-import eu.hithredin.spsdk.ui.ScreenStatus;
+import eu.hithredin.spsdk.app.MainActivity;
 import eu.hithredin.spsdk.query.ResultInfo;
+import eu.hithredin.spsdk.ui.ScreenStatus;
 import hugo.weaving.DebugLog;
 
 /**
  * Functionnal Fragment based on a RercyclerView
  * Help to query data, used the RecyclerView, Manage error/reload
  */
-public abstract class BaseRecyclerFragment<T> extends BaseLoadFragment implements SwipeRefreshLayout.OnRefreshListener {
+public abstract class BaseRecyclerDialog<T> extends BaseLoadDialog implements SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -78,7 +80,7 @@ public abstract class BaseRecyclerFragment<T> extends BaseLoadFragment implement
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(fragmentLayout(), container, false);
         assignViews(root);
-        populateViews(savedInstanceState, getScreenStatus());
+        populateViews(savedInstanceState, ((MainActivity)getActivity()).getScreenStatus());
         loadListQuery();
         return root;
     }
@@ -93,14 +95,10 @@ public abstract class BaseRecyclerFragment<T> extends BaseLoadFragment implement
 
     @Override
     public void onRefresh() {
-        cleanList();
-        loadListQuery();
-    }
-
-    protected void cleanList(){
         adapter.clear();
         pageLoadCount = 0;
         setIsLoading(false);
+        loadListQuery();
     }
 
     private View.OnClickListener clickReload = new View.OnClickListener() {

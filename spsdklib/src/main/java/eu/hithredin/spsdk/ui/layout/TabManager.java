@@ -84,5 +84,11 @@ public abstract class TabManager {
         }
     }
 
+    public ViewPager getViewPager() {
+        return viewPager;
+    }
 
+    public TabLayout getTabLayout() {
+        return tabLayout;
+    }
 }

@@ -29,6 +29,13 @@ public class ResultInfo {
         return ri;
     }
 
+    public static ResultInfo getError() {
+        ResultInfo ri = new ResultInfo();
+        ri.statusResult = ORDER_RESULT.first;
+        ri.codeQuery = CODE_QUERY.SERVER_ERROR;
+        return ri;
+    }
+
     /**
      * Order of this result. Sometime the callback is called twice if cache (first) is sent before data query (last)
      */
