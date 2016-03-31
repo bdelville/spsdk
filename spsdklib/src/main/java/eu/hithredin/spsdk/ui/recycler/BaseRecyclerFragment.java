@@ -79,6 +79,8 @@ public abstract class BaseRecyclerFragment<T> extends BaseLoadFragment implement
         View root = inflater.inflate(fragmentLayout(), container, false);
         assignViews(root);
         populateViews(savedInstanceState, getScreenStatus());
+
+        cleanList();
         loadListQuery();
         return root;
     }

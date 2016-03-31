@@ -17,10 +17,11 @@ import hugo.weaving.DebugLog;
  */
 public abstract class BaseLoadFragment extends BaseFragment {
 
-    private ProgressBar spinnerCenterLoading;
-    private View errorLayout;
-    private View errorReloadAction;
-    private TextView errorReloadText, errorTitle, errorText;
+    protected ProgressBar spinnerCenterLoading;
+    protected View errorReloadAction;
+    protected TextView errorReloadText;
+    protected TextView errorTitle;
+    protected TextView errorText;
     private int loadQueryId;
 
     /**
@@ -39,32 +40,43 @@ public abstract class BaseLoadFragment extends BaseFragment {
     }
 
     protected void showError(String title, String message, boolean showReload) {
-        if (errorLayout == null) {
-            return;
+        if (errorTitle != null) {
+            errorTitle.setVisibility(View.VISIBLE);
+            errorTitle.setText(title);
         }
-        errorLayout.setVisibility(View.VISIBLE);
+        if(errorText != null) {
+            errorText.setVisibility(View.VISIBLE);
+            errorText.setText(message);
+        }
 
-        if(!showReload){
-            errorReloadAction.setVisibility(View.INVISIBLE);
-        } else{
-            errorReloadAction.setVisibility(View.VISIBLE);
+        if(errorReloadAction != null) {
+            if (!showReload) {
+                errorReloadAction.setVisibility(View.INVISIBLE);
+            } else {
+                errorReloadAction.setVisibility(View.VISIBLE);
+            }
         }
-        errorTitle.setText(title);
-        errorText.setText(message);
     }
 
     protected void setReloadAction(View.OnClickListener reload){
         if(errorReloadAction != null){
             errorReloadAction.setOnClickListener(reload);
         }
+        //TODO errorReloadText
     }
 
     /**
      * Hide the error Message
      */
     protected void hideError() {
-        if (errorLayout != null) {
-            errorLayout.setVisibility(View.GONE);
+        if (errorTitle != null) {
+            errorTitle.setVisibility(View.GONE);
+        }
+        if(errorText != null) {
+            errorText.setVisibility(View.GONE);
+        }
+        if(errorReloadAction != null) {
+            errorReloadAction.setVisibility(View.GONE);
         }
     }
 
@@ -86,7 +98,6 @@ public abstract class BaseLoadFragment extends BaseFragment {
             spinnerCenterLoading = (ProgressBar) loader;
         }
 
-        errorLayout = root.findViewById(R.id.info_layout);
         errorReloadAction = root.findViewById(R.id.info_reload);
         errorReloadText = (TextView) root.findViewById(R.id.info_reload_text);
         errorTitle = (TextView) root.findViewById(R.id.info_title);
