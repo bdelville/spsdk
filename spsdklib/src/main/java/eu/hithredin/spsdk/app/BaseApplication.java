@@ -14,6 +14,7 @@ import java.lang.ref.WeakReference;
 
 import de.greenrobot.event.EventBus;
 import eu.hithredin.spsdk.BuildConfig;
+import eu.hithredin.spsdk.app.manager.LaterRunner;
 import eu.hithredin.spsdk.common.event.OrientationAppChanged;
 import eu.hithredin.spsdk.data.DeviceData;
 import hugo.weaving.DebugLog;
@@ -31,6 +32,7 @@ public abstract class BaseApplication extends Application {
     private static BaseApplication app;
 
     private static WeakReference<Activity> currentActivity;
+    protected LaterRunner runner = new LaterRunner();
 
     public static Activity getCurrentActivity() {
         if(currentActivity == null){
@@ -41,6 +43,14 @@ public abstract class BaseApplication extends Application {
 
     public static void setCurrentActivity(Activity currentActivity) {
         BaseApplication.currentActivity = new WeakReference<>(currentActivity);
+    }
+
+    public static BaseApplication app() {
+        return app;
+    }
+
+    public LaterRunner getRunner() {
+        return runner;
     }
 
     @Override
@@ -73,7 +83,7 @@ public abstract class BaseApplication extends Application {
             DeviceData.get().reinit();
             lastOrientation = newConfig.orientation;
 
-            runLater(new Runnable() {
+            runner.runLater(new Runnable() {
                 @Override
                 public void run() {
                     EventBus.getDefault().post(new OrientationAppChanged(newConfig));
@@ -82,33 +92,7 @@ public abstract class BaseApplication extends Application {
         }
     }
 
-    public static void runLater(Runnable action){
-        runLater(action, 0);
+    public static LaterRunner runner() {
+        return app().getRunner();
     }
-
-    /**
-     * Run on the UI Thread later on
-     * @param action
-     * @param timer
-     */
-    public static void runLater(Runnable action, long timer){
-        if(app == null){
-            return;
-        }
-        if(timer <= 0){
-            app.laterRunner.post(action);
-        } else{
-            app.laterRunner.postDelayed(action, timer);
-        }
-    }
-
-    protected Handler laterRunner = new Handler(Looper.getMainLooper()){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if(msg.obj instanceof Runnable){
-                ((Runnable) msg.obj).run();
-            }
-        }
-    };
 }

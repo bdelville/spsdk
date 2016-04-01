@@ -11,6 +11,7 @@ import android.view.View;
 
 
 import de.greenrobot.event.EventBus;
+import eu.hithredin.spsdk.app.manager.LaterRunner;
 import eu.hithredin.spsdk.data.DeviceData;
 import eu.hithredin.spsdk.ui.ScreenStatus;
 import hugo.weaving.DebugLog;
@@ -26,6 +27,7 @@ public abstract class BaseFragment extends Fragment {
 private static final String LOG_TAG = BaseFragment.class.getSimpleName();
 
     protected boolean firstResumed = true;
+    protected LaterRunner runner = new LaterRunner();
 
     private ScreenStatus screenStatus;
 
@@ -92,7 +94,7 @@ private static final String LOG_TAG = BaseFragment.class.getSimpleName();
         DeviceData.get().reinit();
 
         if(screenStatus != (screenStatus = getScreenStatus(newConfig))) {
-            runLater(new Runnable() {
+            runner.runLater(new Runnable() {
                 @Override
                 public void run() {
                     actionOnOrientation(screenStatus);
@@ -100,47 +102,6 @@ private static final String LOG_TAG = BaseFragment.class.getSimpleName();
             });
         }
     }
-
-    protected void runLater(Runnable action){
-        runLater(action, 0);
-    }
-
-    protected void runLater(Runnable action, long timer){
-        if(laterRunner == null){
-            laterRunner = new Handler(Looper.getMainLooper()){
-                @Override
-                public void handleMessage(Message msg) {
-                    super.handleMessage(msg);
-                    if(msg.obj instanceof Runnable){
-                        ((Runnable) msg.obj).run();
-                    }
-                }
-            };
-        }
-
-        if(timer <= 0){
-            laterRunner.post(action);
-        } else{
-            laterRunner.postDelayed(action, timer);
-        }
-    }
-
-    /**
-     * Remove runLater action. If action is null, remove all actions
-     * @param action
-     */
-    protected void runLaterCancel(Runnable action){
-        if(laterRunner == null){
-            return;
-        }
-        if(action == null){
-            laterRunner.removeCallbacksAndMessages(null);
-        } else{
-            laterRunner.removeCallbacks(action);
-        }
-    }
-
-    private Handler laterRunner;
 
 
     /**
@@ -186,7 +147,7 @@ private static final String LOG_TAG = BaseFragment.class.getSimpleName();
     public void onPause() {
         super.onPause();
         firstResumed = false;
-        runLaterCancel(null);
+        runner.runLaterCancel(null);
     }
 
     @Override

@@ -92,7 +92,7 @@ private static final String LOG_TAG = DialogFragment.class.getSimpleName();
         DeviceData.get().reinit();
 
         if(screenStatus != (screenStatus = getScreenStatus(newConfig))) {
-            runLater(new Runnable() {
+            BaseApplication.app().getRunner().runLater(new Runnable() {
                 @Override
                 public void run() {
                     actionOnOrientation(screenStatus);
@@ -100,47 +100,6 @@ private static final String LOG_TAG = DialogFragment.class.getSimpleName();
             });
         }
     }
-
-    protected void runLater(Runnable action){
-        runLater(action, 0);
-    }
-
-    protected void runLater(Runnable action, long timer){
-        if(laterRunner == null){
-            laterRunner = new Handler(Looper.getMainLooper()){
-                @Override
-                public void handleMessage(Message msg) {
-                    super.handleMessage(msg);
-                    if(msg.obj instanceof Runnable){
-                        ((Runnable) msg.obj).run();
-                    }
-                }
-            };
-        }
-
-        if(timer <= 0){
-            laterRunner.post(action);
-        } else{
-            laterRunner.postDelayed(action, timer);
-        }
-    }
-
-    /**
-     * Remove runLater action. If action is null, remove all actions
-     * @param action
-     */
-    protected void runLaterCancel(Runnable action){
-        if(laterRunner == null){
-            return;
-        }
-        if(action == null){
-            laterRunner.removeCallbacksAndMessages(null);
-        } else{
-            laterRunner.removeCallbacks(action);
-        }
-    }
-
-    private Handler laterRunner;
 
 
     /**
@@ -186,7 +145,6 @@ private static final String LOG_TAG = DialogFragment.class.getSimpleName();
     public void onPause() {
         super.onPause();
         firstResumed = false;
-        runLaterCancel(null);
     }
 
     @Override
