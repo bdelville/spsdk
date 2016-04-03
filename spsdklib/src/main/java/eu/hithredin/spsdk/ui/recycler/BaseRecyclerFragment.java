@@ -23,6 +23,8 @@ import hugo.weaving.DebugLog;
 public abstract class BaseRecyclerFragment<T> extends BaseLoadFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerView recyclerView;
+    private AdapterLinearLayout linearLayout;
+
     private RecyclerView.LayoutManager layoutManager;
     protected RecyclerAdapter<T> adapter;
     protected SwipeRefreshLayout swipeRefreshLayout;
@@ -36,19 +38,33 @@ public abstract class BaseRecyclerFragment<T> extends BaseLoadFragment implement
 
     protected void assignViews(View root){
         super.assignViews(root);
-        recyclerView = (RecyclerView) root.findViewById(R.id.recyclerview);
+
+        View view = root.findViewById(R.id.recyclerview);
+        if(view instanceof AdapterLinearLayout) {
+            linearLayout = (AdapterLinearLayout) view;
+        }
+        else {
+            recyclerView = (RecyclerView) view;
+        }
         swipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.activity_main_swipe_refresh_layout);
     }
 
 
     protected void populateViews(Bundle savedInstanceState, ScreenStatus screenStatus){
         super.populateViews(savedInstanceState, screenStatus);
-        layoutManager = buildRecyclerLayoutManager(screenStatus);
-        recyclerView.setLayoutManager(layoutManager);
 
         adapter = buildAdapter();
         adapter.setCellController(buildCellController());
-        recyclerView.setAdapter(adapter);
+
+        if(recyclerView != null) {
+            layoutManager = buildRecyclerLayoutManager(screenStatus);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(adapter);
+        }
+        if(linearLayout != null){
+            //layoutManager can only be a vertical LinearLayout Manager
+            linearLayout.setAdapter(adapter);
+        }
 
         if (swipeRefreshLayout != null) {
             swipeRefreshLayout.setOnRefreshListener(this);;
