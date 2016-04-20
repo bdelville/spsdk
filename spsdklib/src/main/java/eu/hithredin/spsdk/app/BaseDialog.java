@@ -107,7 +107,9 @@ private static final String LOG_TAG = DialogFragment.class.getSimpleName();
      * It allows all abstracted class to load its views without access to OnViewCreated
      * @param root
      */
-    protected abstract void assignViews(View root);
+    protected void assignViews(View root){
+
+    }
 
     /**
      * All the code to configure and fill the views with the default values
@@ -115,7 +117,9 @@ private static final String LOG_TAG = DialogFragment.class.getSimpleName();
      * @param savedInstanceState
      * @param screenStatus
      */
-    protected abstract void populateViews(Bundle savedInstanceState, ScreenStatus screenStatus);
+    protected void populateViews(Bundle savedInstanceState, ScreenStatus screenStatus){
+
+    }
 
     protected final void populateViews(Bundle savedInstanceState){
         populateViews(savedInstanceState, getScreenStatus());

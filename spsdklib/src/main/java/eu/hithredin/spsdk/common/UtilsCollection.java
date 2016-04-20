@@ -1,7 +1,9 @@
 package eu.hithredin.spsdk.common;
 
 import java.lang.ref.WeakReference;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import eu.hithredin.spsdk.query.QueryCallback;
 
@@ -22,5 +24,11 @@ public class UtilsCollection {
         }
 
         list.add(new WeakReference<>(object));
+    }
+
+    public static <T> void clearDuplicate(List<T> list){
+        Set<T> set = new HashSet<>(list);
+        list.clear();
+        list.addAll(set);
     }
 }

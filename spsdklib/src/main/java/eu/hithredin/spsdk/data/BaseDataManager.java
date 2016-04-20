@@ -1,51 +1,48 @@
 package eu.hithredin.spsdk.data;
 
 import android.content.SharedPreferences;
-import android.provider.ContactsContract;
 
 import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
-import com.google.repacked.apache.commons.io.IOUtils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.nio.charset.Charset;
-
-import eu.hithredin.spsdk.BuildConfig;
-import eu.hithredin.spsdk.common.UtilsAndroid;
 
 /**
  * Created by benoit on 1/6/16.
  * Helper to (de)serialize any object and saved it into local memory.
- * A good pattern would be to override this class, make it a singleton, and provide access via specific data entries 
- * (such as saveCart(Cart cart); ) 
+ * A good pattern would be to override this class, make it a singleton, and provide access via specific data entries
+ * (such as saveCart(Cart cart); )
  */
 public abstract class BaseDataManager {
 
     private boolean isFirstLaunch = false;
     protected String lastVersion;
 
-    public String getLastVersion(){
+    /**
+     * Get the version code of this app before this instance was launched
+     * Useful for database update, etc....
+     * @return
+     */
+    public String getLastVersion() {
         return lastVersion;
     }
 
-    protected BaseDataManager(){
+    protected BaseDataManager() {
         lastVersion = retrieve("VERSION_CODE");
-        if(lastVersion == null){
+        if (lastVersion == null) {
             isFirstLaunch = true;
         }
 
         String version = DeviceData.ctx().getPackageName();
-        if(!version.equals(lastVersion)){
+        if (!version.equals(lastVersion)) {
             save(DeviceData.ctx().getPackageName(), "VERSION_CODE");
         }
     }
 
     /**
      * Save a object to memory with a default key. It may exist only one saved instance of this class
+     *
      * @param o
      * @param clazz
      */
@@ -55,6 +52,7 @@ public abstract class BaseDataManager {
 
     /**
      * Save a object to memory
+     *
      * @param o
      * @param clazz
      * @param key
@@ -67,6 +65,7 @@ public abstract class BaseDataManager {
 
     /**
      * Save a complex templated object to memory
+     *
      * @param o
      * @param typeToken
      * @param key
@@ -79,6 +78,7 @@ public abstract class BaseDataManager {
 
     /**
      * Return a saved complex object from memory
+     *
      * @param typeToken
      * @param key
      * @param <T>
@@ -103,8 +103,7 @@ public abstract class BaseDataManager {
             }
             return new Gson().fromJson(s, typeToken);*/
             return new Gson().fromJson(new InputStreamReader(is), typeToken);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -112,6 +111,7 @@ public abstract class BaseDataManager {
 
     /**
      * Return a saved object with default key
+     *
      * @param clazz
      * @param <T>
      * @return
@@ -122,6 +122,7 @@ public abstract class BaseDataManager {
 
     /**
      * Return a saved object
+     *
      * @param clazz
      * @param key
      * @param <T>
@@ -137,6 +138,7 @@ public abstract class BaseDataManager {
 
     /**
      * Save a simple string to memory
+     *
      * @param o
      * @param key
      */
@@ -148,6 +150,7 @@ public abstract class BaseDataManager {
 
     /**
      * Retrieve a simple string from memory
+     *
      * @param key
      * @return
      */
