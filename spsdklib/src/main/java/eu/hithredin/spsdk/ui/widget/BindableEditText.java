@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.widget.EditText;
 
 /**
- * Edit text that correct the carret moved after binding changed
+ * Edit text that correct the carret moved after the binding has changed
  */
 public class BindableEditText extends EditText {
 

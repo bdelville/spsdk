@@ -9,7 +9,6 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 
 /**
- * Created by benoit on 1/6/16.
  * Helper to (de)serialize any object and saved it into local memory.
  * A good pattern would be to override this class, make it a singleton, and provide access via specific data entries
  * (such as saveCart(Cart cart); )

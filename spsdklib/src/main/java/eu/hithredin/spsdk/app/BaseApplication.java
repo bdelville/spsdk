@@ -20,8 +20,7 @@ import eu.hithredin.spsdk.data.DeviceData;
 import hugo.weaving.DebugLog;
 
 /**
- * Created by bdelville on 10/07/2014.
- * Base class that can be overriden for the app. Always use it
+ * Base class that can be overriden for the Application instance. Add useful features
  */
 public abstract class BaseApplication extends Application {
 

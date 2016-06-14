@@ -3,7 +3,7 @@ package eu.hithredin.spsdk.common;
 import java.text.DateFormat;
 
 /**
- * Created by benoit on 1/7/16.
+ * Constants used by the library
  */
 public class Constant {
 

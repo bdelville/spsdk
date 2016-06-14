@@ -3,7 +3,7 @@ package eu.hithredin.spsdk.common.event;
 import android.content.res.Configuration;
 
 /**
- * Created by SEDONAINTRA\bdelville on 09/04/15.
+ * App managed message that notify an orientation change
  */
 public class OrientationAppChanged {
     private Configuration config;

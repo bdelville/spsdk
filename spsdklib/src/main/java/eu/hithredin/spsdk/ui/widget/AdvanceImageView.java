@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import eu.hithredin.spsdk.R;
 
 /**
- * Created by benoit on 2/2/16.
+ * Some advance feature added to the ImageView: focus state
  */
 public class AdvanceImageView extends ImageView {
     private boolean stateFilterFocused;

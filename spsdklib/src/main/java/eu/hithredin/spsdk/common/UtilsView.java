@@ -10,7 +10,7 @@ import android.view.ViewTreeObserver;
 import eu.hithredin.spsdk.data.DeviceData;
 
 /**
- * Created by benoit on 1/6/16.
+ * Utils for View and ViewGroup manipulations
  */
 public class UtilsView {
 

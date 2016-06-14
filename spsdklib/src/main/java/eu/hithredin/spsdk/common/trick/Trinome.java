@@ -1,7 +1,7 @@
 package eu.hithredin.spsdk.common.trick;
 
 /**
- * Created by  on 14/10/2014.
+ * Like a pair,... but with three items
  */
 public class Trinome<U,V,T> {
     public U first;

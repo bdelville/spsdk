@@ -11,7 +11,7 @@ import android.util.Log;
 import eu.hithredin.spsdk.data.DeviceData;
 
 /**
- * Created by benoit on 1/6/16.
+ * Utils concerning Android platform and other apps
  */
 public class UtilsAndroid {
 

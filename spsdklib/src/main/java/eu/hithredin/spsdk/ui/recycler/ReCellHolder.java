@@ -9,7 +9,7 @@ import android.view.View.OnClickListener;
 
 
 /**
- *
+ * Holder of data and view for a cell of recyclerView
  */
 public abstract class ReCellHolder<T> extends RecyclerView.ViewHolder implements OnClickListener{
     protected Context context;

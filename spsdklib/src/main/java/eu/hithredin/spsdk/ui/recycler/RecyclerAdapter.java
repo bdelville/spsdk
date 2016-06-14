@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Custom Generic adapter for REcyclerView.
- * Abstract the type of cells resolution, inflate layout, while keeping a dynamic management (not everything configured)
+ * Custom Generic adapter for RecyclerView.
+ * Abstract the type of cells resolution, inflate layout, while keeping a dynamic management (not everything is declared)
  */
 public class RecyclerAdapter<T> extends RecyclerView.Adapter<ReCellHolder> {
 

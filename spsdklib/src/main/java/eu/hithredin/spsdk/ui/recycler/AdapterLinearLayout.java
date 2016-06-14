@@ -23,7 +23,7 @@ import eu.hithredin.spsdk.data.DeviceData;
 /**
  * Behave like a RecyclerView, but use a LinearLayout instead
  * Useful to use a Recycler adapter pattern inside a ScrollView when the cell number is limited
- * TODO handle the recycling CellHolder
+ * TODO handle the recycling of CellHolder and scrolling items within virtual height
  */
 public class AdapterLinearLayout extends LinearLayout implements OnTouchListener, OnClickListener {
 

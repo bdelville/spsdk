@@ -17,7 +17,7 @@ import eu.hithredin.spsdk.query.ResultInfo;
 import hugo.weaving.DebugLog;
 
 /**
- * Functionnal Fragment based on a RercyclerView
+ * Functionnal Fragment based on a RecyclerView
  * Help to query data, used the RecyclerView, Manage error/reload
  */
 public abstract class BaseRecyclerFragment<T> extends BaseLoadFragment implements SwipeRefreshLayout.OnRefreshListener {

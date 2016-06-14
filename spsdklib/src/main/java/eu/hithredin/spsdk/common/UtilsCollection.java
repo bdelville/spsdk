@@ -8,7 +8,7 @@ import java.util.Set;
 import eu.hithredin.spsdk.query.QueryCallback;
 
 /**
- * Created by benoit on 3/30/16.
+ * Utils to help usage of java collections
  */
 public class UtilsCollection {
 

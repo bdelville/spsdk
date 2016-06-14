@@ -5,7 +5,7 @@ import android.os.Looper;
 import android.os.Message;
 
 /**
- * Created by benoit on 3/31/16.
+ * Tool that allow to run an action on the main thread.
  */
 public class LaterRunner {
 

@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.Random;
 
 /**
- * Created by benoit on 1/6/16.
+ * Unclassifieable utils functions
  */
 public class UtilsOther {
 
@@ -17,7 +17,7 @@ public class UtilsOther {
     private static Random r;
 
     /**
-     * Get a prebuilt random class
+     * Get a seeded random class
      * @return
      */
     public static Random random(){

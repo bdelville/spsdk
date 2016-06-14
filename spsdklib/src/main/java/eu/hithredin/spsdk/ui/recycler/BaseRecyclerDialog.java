@@ -20,7 +20,7 @@ import hugo.weaving.DebugLog;
 
 /**
  * Functionnal Fragment based on a RercyclerView
- * Help to query data, used the RecyclerView, Manage error/reload
+ * Help to query data, to use the RecyclerView, Manage error/reload
  */
 public abstract class BaseRecyclerDialog<T> extends BaseLoadDialog implements SwipeRefreshLayout.OnRefreshListener {
 

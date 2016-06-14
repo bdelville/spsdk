@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Created by SEDONAINTRA\bdelville on 17/03/15.
+ * Controller used by a view to handle the cell of the recyclerView
  */
 public abstract class RecyclerCellController<T> {
 

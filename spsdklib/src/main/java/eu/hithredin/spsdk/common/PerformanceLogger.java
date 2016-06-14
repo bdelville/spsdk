@@ -8,7 +8,7 @@ import java.util.Map;
 import eu.hithredin.spsdk.data.DeviceData;
 
 /**
- * Created by  on 23/12/13.
+ * Helper to measure time consumed by some process
  */
 public class PerformanceLogger {
 

@@ -13,7 +13,7 @@ import eu.hithredin.spsdk.R;
 import eu.hithredin.spsdk.ui.ScreenStatus;
 
 /**
- * Helper to handle a TabLayout and ViewPager within an activity or a fragment
+ * Helper to handle a TabLayout and a ViewPager within an activity or a fragment
  */
 public abstract class TabManager {
     protected ViewPager viewPager;

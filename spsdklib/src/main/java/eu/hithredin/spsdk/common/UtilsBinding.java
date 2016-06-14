@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 
 /**
- * Created by benoit on 2/2/16.
+ * Utils for Android bindings
  */
 public class UtilsBinding {
 

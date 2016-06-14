@@ -10,7 +10,6 @@ import java.text.DateFormat;
 import java.util.Calendar;
 
 /**
- * Created by benoit on 2/12/16.
  * TODO
  */
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
