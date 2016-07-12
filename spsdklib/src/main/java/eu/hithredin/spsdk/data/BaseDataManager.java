@@ -4,8 +4,14 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Type;
 
 /**
@@ -60,6 +66,20 @@ public abstract class BaseDataManager {
         SharedPreferences.Editor editor = DeviceData.get().getPreferences().edit();
         editor.putString(key, new Gson().toJson(o, clazz)); // TODO Why not o.getClass() instead of clazz?
         editor.apply();
+
+        /*
+        //NO JSON BUT SERIALISATION
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream("tempdata");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(o);
+            oos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
     }
 
     /**
@@ -91,6 +111,13 @@ public abstract class BaseDataManager {
         return null;
     }
 
+    /**
+     * Load data fron a raw resources file as Json
+     * @param typeToken
+     * @param rawId
+     * @param <T>
+     * @return
+     */
     protected <T> T retrieveRaw(Type typeToken, int rawId) {
         try {
             InputStream is = DeviceData.ctx().getResources().openRawResource(rawId);
@@ -116,6 +143,20 @@ public abstract class BaseDataManager {
      * @return
      */
     protected <T> T retrieve(Class<T> clazz) {
+
+        /*
+        //NO JSON BUT SERIALISATION
+        try{
+            FileInputStream fis = new FileInputStream("tempdata");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            T object = (T) ois.readObject();
+            ois.close();
+        }
+        catch (Exception ex)
+        {
+
+        }*/
+
         return retrieve(clazz, clazz.getSimpleName());
     }
 
