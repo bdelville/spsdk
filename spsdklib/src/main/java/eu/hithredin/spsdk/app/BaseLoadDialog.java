@@ -164,7 +164,7 @@ public abstract class BaseLoadDialog extends BaseDialog {
      * @param resultInfo
      */
     protected void onQueryError(ResultInfo resultInfo) {
-        switch (resultInfo.getCodeQuery()) {
+        switch (resultInfo.codeQuery) {
             case NETWORK_ERROR:
                 showIoError(true);
                 break;

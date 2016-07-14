@@ -6,6 +6,11 @@ package eu.hithredin.spsdk.query;
  */
 public class ResultInfo {
 
+    public ResultInfo(BaseRequestBuilder request) {
+        tag = request.tag;
+        idQuery = request.getQueryId();
+    }
+
     public static ResultInfo getSuccess() {
         ResultInfo ri = new ResultInfo();
         ri.statusResult = ORDER_RESULT.first;
@@ -28,17 +33,18 @@ public class ResultInfo {
     }
 
 
-    public enum CODE_QUERY{
+    public enum CODE_QUERY {
         SUCCESS, SERVER_ERROR, TIMEOUT_ERROR, NETWORK_ERROR, NOT_AUTHORIZED, NOT_FOUND, ERROR_ALREADY_MANAGED
     }
 
+    public int idQuery;
+    public int httpCode;
 
-    private int httpCode;
 
     /**
      * Status query result.
      */
-    private CODE_QUERY codeQuery;
+    public CODE_QUERY codeQuery;
 
 
     public ORDER_RESULT statusResult;
@@ -46,9 +52,9 @@ public class ResultInfo {
     /**
      * Timestamp Unix (POSIX) in millisecond of the receiving of query result.
      */
-    private long spentTime = 0;
+    public long spentTime = 0;
 
-    private Object tag;
+    public Object tag;
 
     public ResultInfo() {
     }
@@ -64,43 +70,4 @@ public class ResultInfo {
         return codeQuery == CODE_QUERY.SUCCESS;
     }
 
-    public int getHttpCode() {
-        return httpCode;
-    }
-
-    public void setHttpCode(int httpCode) {
-        this.httpCode = httpCode;
-    }
-
-    public CODE_QUERY getCodeQuery() {
-        return codeQuery;
-    }
-
-    public void setCodeQuery(CODE_QUERY codeQuery) {
-        this.codeQuery = codeQuery;
-    }
-
-    public long getSpentTime() {
-        return spentTime;
-    }
-
-    public void setSpentTime(long spentTime) {
-        this.spentTime = spentTime;
-    }
-
-    public ORDER_RESULT getStatusResult() {
-        return statusResult;
-    }
-
-    public void setStatusResult(ORDER_RESULT statusResult) {
-        this.statusResult = statusResult;
-    }
-
-    public Object getTag() {
-        return tag;
-    }
-
-    public void setTag(Object tag) {
-        this.tag = tag;
-    }
 }

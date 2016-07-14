@@ -10,15 +10,15 @@ public abstract class ProxyRunnerQueryCallback<T,E> extends ProxyQueryCallback<T
         super(callback);
     }
 
-    protected abstract void run(int idQuery, ResultInfo queryInfo, T data, E error);
+    protected abstract void run(ResultInfo queryInfo, T data, E error);
 
     @Override
-    public void onQueryFinished(int idQuery, ResultInfo queryInfo, T data, E error) {
-        super.onQueryFinished(idQuery, queryInfo, data, error);
-        run(idQuery, queryInfo, data, error);
+    public void onQueryFinished(ResultInfo queryInfo, T data, E error) {
+        super.onQueryFinished(queryInfo, data, error);
+        run(queryInfo, data, error);
 
         if(callbackRef.get() != null){
-            callbackRef.get().onQueryFinished(idQuery, queryInfo, data, error);
+            callbackRef.get().onQueryFinished(queryInfo, data, error);
         }
     }
 }

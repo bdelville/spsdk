@@ -7,5 +7,5 @@ package eu.hithredin.spsdk.query;
  */
 public interface QueryCallback <T,E> {
 
-    public void onQueryFinished(int idQuery, ResultInfo queryInfo, T data, E error);
+    void onQueryFinished(ResultInfo queryInfo, T data, E error);
 }

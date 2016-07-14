@@ -148,8 +148,8 @@ public abstract class BaseLoadFragment extends BaseFragment {
      * A generic function to handle error and success of simple queries
      */
     @DebugLog
-    public void queryFinished(int idQuery, ResultInfo resultInfo, Object datas) {
-        if (!canProcess(idQuery)) {
+    public void queryFinished(ResultInfo resultInfo, Object datas) {
+        if (!canProcess(resultInfo.idQuery)) {
             return;
         }
         setIsLoading(false);
@@ -174,7 +174,7 @@ public abstract class BaseLoadFragment extends BaseFragment {
      * @param resultInfo
      */
     protected void onQueryError(ResultInfo resultInfo) {
-        switch (resultInfo.getCodeQuery()) {
+        switch (resultInfo.codeQuery) {
             case NETWORK_ERROR:
                 showIoError(true);
                 break;
