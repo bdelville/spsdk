@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Type;
+import java.util.zip.GZIPInputStream;
 
 /**
  * Helper to (de)serialize any object and saved it into local memory.
@@ -26,7 +27,7 @@ public abstract class BaseDataManager {
 
     /**
      * Get the version code of this app before this instance was launched
-     * Useful for database update, etc....
+     * Useful for database version update, etc....
      * @return
      */
     public String getLastVersion() {
@@ -34,14 +35,14 @@ public abstract class BaseDataManager {
     }
 
     protected BaseDataManager() {
-        lastVersion = retrieve("VERSION_CODE");
+        lastVersion = retrieveString("VERSION_CODE");
         if (lastVersion == null) {
             isFirstLaunch = true;
         }
 
         String version = DeviceData.ctx().getPackageName();
         if (!version.equals(lastVersion)) {
-            save(DeviceData.ctx().getPackageName(), "VERSION_CODE");
+            saveString(DeviceData.ctx().getPackageName(), "VERSION_CODE");
         }
     }
 
@@ -49,26 +50,24 @@ public abstract class BaseDataManager {
      * Save a object to memory with a default key. It may exist only one saved instance of this class
      *
      * @param o
-     * @param clazz
      */
-    protected void save(Object o, Class clazz) {
-        save(o, clazz, clazz.getSimpleName());
+    protected void saveSingleton(Object o) {
+        save(o, o.getClass(), o.getClass().getSimpleName());
     }
 
     /**
      * Save a object to memory
      *
      * @param o
-     * @param clazz
      * @param key
      */
-    protected void save(Object o, Class clazz, String key) {
+    protected void save(Object o, String key) {
         SharedPreferences.Editor editor = DeviceData.get().getPreferences().edit();
-        editor.putString(key, new Gson().toJson(o, clazz)); // TODO Why not o.getClass() instead of clazz?
+        editor.putString(key, new Gson().toJson(o, o.getClass()));
         editor.apply();
 
         /*
-        //NO JSON BUT SERIALISATION
+        //If NO JSON BUT SERIALISATION
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream("tempdata");
@@ -118,17 +117,16 @@ public abstract class BaseDataManager {
      * @param <T>
      * @return
      */
-    protected <T> T retrieveRaw(Type typeToken, int rawId) {
+    protected static <T> T retrieveRawJson(Type typeToken, int rawId, boolean isZip) {
         try {
-            InputStream is = DeviceData.ctx().getResources().openRawResource(rawId);
-            /*BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            String s = "";
-            String line;
-            while ((line = reader.readLine()) != null) {
-                s+= line+"\n";
+            InputStream is;
+            if(isZip) {
+                is = new GZIPInputStream(DeviceData.ctx().getResources().openRawResource(rawId));
+            } else{
+                is = DeviceData.ctx().getResources().openRawResource(rawId);
             }
-            return new Gson().fromJson(s, typeToken);*/
             return new Gson().fromJson(new InputStreamReader(is), typeToken);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -136,14 +134,13 @@ public abstract class BaseDataManager {
     }
 
     /**
-     * Return a saved object with default key
+     * Return a saved object with default key (only one by class)
      *
      * @param clazz
      * @param <T>
      * @return
      */
-    protected <T> T retrieve(Class<T> clazz) {
-
+    protected <T> T retrieveSingleton(Class<T> clazz) {
         /*
         //NO JSON BUT SERIALISATION
         try{
@@ -182,7 +179,7 @@ public abstract class BaseDataManager {
      * @param o
      * @param key
      */
-    protected void save(String o, String key) {
+    protected void saveString(String o, String key) {
         SharedPreferences.Editor editor = DeviceData.get().getPreferences().edit();
         editor.putString(key, o);
         editor.commit();
@@ -194,7 +191,7 @@ public abstract class BaseDataManager {
      * @param key
      * @return
      */
-    protected String retrieve(String key) {
+    protected String retrieveString(String key) {
         return DeviceData.get().getPreferences().getString(key, null);
     }
 

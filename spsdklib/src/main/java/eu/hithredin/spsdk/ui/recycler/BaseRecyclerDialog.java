@@ -11,11 +11,10 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import eu.hithredin.spsdk.R;
-import eu.hithredin.spsdk.app.BaseLoadDialog;
-import eu.hithredin.spsdk.app.BaseLoadFragment;
+import eu.hithredin.spsdk.app.fragment.BaseLoadDialog;
 import eu.hithredin.spsdk.app.MainActivity;
 import eu.hithredin.spsdk.query.ResultInfo;
-import eu.hithredin.spsdk.ui.ScreenStatus;
+
 import hugo.weaving.DebugLog;
 
 /**
@@ -43,9 +42,9 @@ public abstract class BaseRecyclerDialog<T> extends BaseLoadDialog implements Sw
     }
 
 
-    protected void populateViews(Bundle savedInstanceState, ScreenStatus screenStatus){
-        super.populateViews(savedInstanceState, screenStatus);
-        layoutManager = buildRecyclerLayoutManager(screenStatus);
+    protected void populateViews(Bundle savedInstanceState){
+        super.populateViews(savedInstanceState);
+        layoutManager = buildRecyclerLayoutManager();
         recyclerView.setLayoutManager(layoutManager);
 
         adapter = buildAdapter();
@@ -80,16 +79,16 @@ public abstract class BaseRecyclerDialog<T> extends BaseLoadDialog implements Sw
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(fragmentLayout(), container, false);
         assignViews(root);
-        populateViews(savedInstanceState, ((MainActivity)getActivity()).getScreenStatus());
+        populateViews(savedInstanceState);
         loadListQuery();
         return root;
     }
 
     /**
      * Override to force a LayoutManager for the recyclerView
-     * @param screenStatus
+
      */
-    protected RecyclerView.LayoutManager buildRecyclerLayoutManager(ScreenStatus screenStatus) {
+    protected RecyclerView.LayoutManager buildRecyclerLayoutManager() {
         return new LinearLayoutManager(getActivity());
     }
 

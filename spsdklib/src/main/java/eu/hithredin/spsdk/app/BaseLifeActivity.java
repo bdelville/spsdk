@@ -8,8 +8,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import eu.hithredin.spsdk.R;
-import eu.hithredin.spsdk.data.DeviceData;
-import eu.hithredin.spsdk.ui.ScreenStatus;
 
 /**
  * Helper to know when the activity resumes from the exterior or within the app.
@@ -96,38 +94,7 @@ public class BaseLifeActivity extends AppCompatActivity {
     }
 
 
-    protected void populateViews(ScreenStatus status) {
+    protected void populateViews() {
     }
 
-    /**
-     * Get info about what would be the screen state with this new config
-     * @param config
-     * @return
-     */
-    public static ScreenStatus getScreenStatus(Configuration config){
-        int orientation = config.orientation;
-
-        if(DeviceData.get().isTablet()){
-            if(orientation == Configuration.ORIENTATION_PORTRAIT){
-                return ScreenStatus.TABLET_PORTRAIT;
-            } else if(orientation == Configuration.ORIENTATION_LANDSCAPE){
-                return ScreenStatus.TABLET_LANDSCAPE;
-            }
-        } else {
-            if(orientation == Configuration.ORIENTATION_PORTRAIT){
-                return ScreenStatus.PHONE_PORTRAIT;
-            } else if(orientation == Configuration.ORIENTATION_LANDSCAPE){
-                return ScreenStatus.PHONE_LANDSCAPE;
-            }
-        }
-        return ScreenStatus.UNKNOWN;
-    }
-
-    /**
-     * Get infos about the actual screen state
-     * @return
-     */
-    public ScreenStatus getScreenStatus(){
-        return getScreenStatus(getResources().getConfiguration());
-    }
 }

@@ -1,0 +1,3 @@
+* Divide into multiple library: common & network, UI
+* Guess-Preloading Fragment SDK
+* Rethink all screen reorientation helpers with multiwindows in mind

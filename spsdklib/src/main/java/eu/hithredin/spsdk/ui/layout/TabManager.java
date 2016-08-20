@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import eu.hithredin.spsdk.R;
-import eu.hithredin.spsdk.ui.ScreenStatus;
 
 /**
  * Helper to handle a TabLayout and a ViewPager within an activity or a fragment
@@ -40,18 +39,17 @@ public abstract class TabManager {
         viewPager = (ViewPager) activity.findViewById(R.id.viewpager);
     }
 
-    public void populateViews(Bundle savedInstanceState, ScreenStatus status) {
+    public void populateViews(Bundle savedInstanceState) {
         viewPager.setAdapter(buildPageAdapter());
-        if(tabLayout != null){
+        if (tabLayout != null) {
             tabLayout.setupWithViewPager(viewPager);
         }
     }
 
-    public FragmentPagerAdapter buildPageAdapter(){
-        if(fragment != null){
+    public FragmentPagerAdapter buildPageAdapter() {
+        if (fragment != null) {
             return new TabbarAdapter(fragment.getChildFragmentManager());
-        }
-        else{
+        } else {
             return new TabbarAdapter(activity.getSupportFragmentManager());
         }
     }
@@ -62,7 +60,7 @@ public abstract class TabManager {
 
     public abstract String getTitleTab(int index);
 
-    public class TabbarAdapter extends FragmentPagerAdapter{
+    public class TabbarAdapter extends FragmentPagerAdapter {
 
         public TabbarAdapter(FragmentManager fm) {
             super(fm);

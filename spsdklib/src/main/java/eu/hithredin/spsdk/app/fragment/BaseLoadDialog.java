@@ -1,4 +1,4 @@
-package eu.hithredin.spsdk.app;
+package eu.hithredin.spsdk.app.fragment;
 
 import android.os.Bundle;
 import android.view.View;
@@ -9,19 +9,17 @@ import eu.hithredin.spsdk.R;
 import eu.hithredin.spsdk.common.UtilsOther;
 import eu.hithredin.spsdk.common.UtilsString;
 import eu.hithredin.spsdk.query.ResultInfo;
-import eu.hithredin.spsdk.ui.ScreenStatus;
 import hugo.weaving.DebugLog;
 
 /**
  * Base Fragment that contains helpers needed to display loading, error, empty statuses
  */
-public abstract class BaseLoadFragment extends BaseFragment {
+public abstract class BaseLoadDialog extends BaseDialog {
 
-    protected ProgressBar spinnerCenterLoading;
-    protected View errorReloadAction;
-    protected TextView errorReloadText;
-    protected TextView errorTitle;
-    protected TextView errorText;
+    private ProgressBar spinnerCenterLoading;
+    private View errorLayout;
+    private View errorReloadAction;
+    private TextView errorReloadText, errorTitle, errorText;
     private int loadQueryId;
 
     /**
@@ -35,48 +33,37 @@ public abstract class BaseLoadFragment extends BaseFragment {
         showError(UtilsString.string(R.string.info_error_io), "", showReload);
     }
 
-    protected void showEmpty(){
+    protected void showEmpty() {
         showError(UtilsString.string(R.string.info_data_empty), "", false);
     }
 
     protected void showError(String title, String message, boolean showReload) {
-        if (errorTitle != null) {
-            errorTitle.setVisibility(View.VISIBLE);
-            errorTitle.setText(title);
+        if (errorLayout == null) {
+            return;
         }
-        if(errorText != null) {
-            errorText.setVisibility(View.VISIBLE);
-            errorText.setText(message);
-        }
+        errorLayout.setVisibility(View.VISIBLE);
 
-        if(errorReloadAction != null) {
-            if (!showReload) {
-                errorReloadAction.setVisibility(View.INVISIBLE);
-            } else {
-                errorReloadAction.setVisibility(View.VISIBLE);
-            }
+        if (!showReload) {
+            errorReloadAction.setVisibility(View.INVISIBLE);
+        } else {
+            errorReloadAction.setVisibility(View.VISIBLE);
         }
+        errorTitle.setText(title);
+        errorText.setText(message);
     }
 
-    protected void setReloadAction(View.OnClickListener reload){
-        if(errorReloadAction != null){
+    protected void setReloadAction(View.OnClickListener reload) {
+        if (errorReloadAction != null) {
             errorReloadAction.setOnClickListener(reload);
         }
-        //TODO errorReloadText
     }
 
     /**
      * Hide the error Message
      */
     protected void hideError() {
-        if (errorTitle != null) {
-            errorTitle.setVisibility(View.GONE);
-        }
-        if(errorText != null) {
-            errorText.setVisibility(View.GONE);
-        }
-        if(errorReloadAction != null) {
-            errorReloadAction.setVisibility(View.GONE);
+        if (errorLayout != null) {
+            errorLayout.setVisibility(View.GONE);
         }
     }
 
@@ -88,24 +75,25 @@ public abstract class BaseLoadFragment extends BaseFragment {
         }
     }
 
-    protected void updateLoading(int percent){
+    protected void updateLoading(int percent) {
         spinnerCenterLoading.setProgress(percent);
     }
 
     protected void assignViews(View root) {
         View loader = root.findViewById(R.id.info_load_indicator);
-        if(loader instanceof ProgressBar){
+        if (loader instanceof ProgressBar) {
             spinnerCenterLoading = (ProgressBar) loader;
         }
 
+        errorLayout = root.findViewById(R.id.info_layout);
         errorReloadAction = root.findViewById(R.id.info_reload);
         errorReloadText = (TextView) root.findViewById(R.id.info_reload_text);
         errorTitle = (TextView) root.findViewById(R.id.info_title);
         errorText = (TextView) root.findViewById(R.id.info_text);
     }
 
-    protected void populateViews(Bundle savedInstanceState, ScreenStatus screenStatus){
-        if(spinnerCenterLoading != null) {
+    protected void populateViews(Bundle savedInstanceState) {
+        if (spinnerCenterLoading != null) {
             spinnerCenterLoading.setMax(100);
         }
     }
@@ -148,8 +136,8 @@ public abstract class BaseLoadFragment extends BaseFragment {
      * A generic function to handle error and success of simple queries
      */
     @DebugLog
-    public void queryFinished(ResultInfo resultInfo, Object datas) {
-        if (!canProcess(resultInfo.idQuery)) {
+    public void queryFinished(int idQuery, ResultInfo resultInfo, Object datas) {
+        if (!canProcess(idQuery)) {
             return;
         }
         setIsLoading(false);
@@ -171,6 +159,7 @@ public abstract class BaseLoadFragment extends BaseFragment {
 
     /**
      * Handle the query error behaviour
+     *
      * @param resultInfo
      */
     protected void onQueryError(ResultInfo resultInfo) {

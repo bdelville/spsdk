@@ -7,7 +7,7 @@ import android.app.Fragment;
  */
 public class BaseMessage {
 
-    public long idOrigin;
+    private long idOrigin;
 
     public BaseMessage(Fragment f){
         idOrigin = f.hashCode();

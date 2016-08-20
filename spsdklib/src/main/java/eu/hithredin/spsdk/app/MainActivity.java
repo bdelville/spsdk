@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import eu.hithredin.spsdk.R;
+import eu.hithredin.spsdk.app.fragment.BaseLayoutFragment;
 import eu.hithredin.spsdk.common.Constant;
 import eu.hithredin.spsdk.data.DeviceData;
 

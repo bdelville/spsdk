@@ -1,11 +1,9 @@
-package eu.hithredin.spsdk.app;
+package eu.hithredin.spsdk.app.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
-
-import eu.hithredin.spsdk.ui.ScreenStatus;
 
 
 /**
@@ -28,41 +26,36 @@ public abstract class BaseLayoutFragment extends BaseLoadFragment {
     }
 
     @Override
-    protected void populateViews(Bundle savedInstanceState, ScreenStatus screenStatus) {
-        super.populateViews(savedInstanceState, screenStatus);
-    }
-
-    @Override
-    protected void actionOnOrientation(ScreenStatus screenStatus) {
-
+    protected void populateViews(Bundle savedInstanceState) {
+        super.populateViews(savedInstanceState);
     }
 
     /**
-     *
-     * @param fragment Fragment to add to the layoutFragment
-     * @param args Arguments to give to the fragment. If null, we will provide the activity intent's extras
+     * @param fragment     Fragment to add to the layoutFragment
+     * @param args         Arguments to give to the fragment. If null, we will provide the activity intent's extras
      * @param id_container id of the container for this fragment
      */
-    protected void setContentFragment(Fragment fragment, Bundle args, int id_container){
+    protected void setContentFragment(Fragment fragment, Bundle args, int id_container) {
         //Set Arguments
-        if(args != null){
+        if (args != null) {
             fragment.setArguments(args);
-        } else{
+        } else {
             fragment.setArguments(getArguments());
         }
 
         //Show the fragment
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(id_container, fragment, ""+id_container);
+        transaction.replace(id_container, fragment, "" + id_container);
         transaction.commit();
     }
 
     /**
      * When the activity is asked to display the same MainFragment: it can just update its arguments
+     *
      * @param argumentsRuntime
      */
     public void setArgumentsRuntime(Bundle argumentsRuntime) {
         getArguments().putAll(argumentsRuntime);
-        populateViews(null, getScreenStatus());
+        populateViews(null);
     }
 }

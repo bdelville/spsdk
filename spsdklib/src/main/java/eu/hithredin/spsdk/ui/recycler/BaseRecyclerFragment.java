@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import eu.hithredin.spsdk.R;
-import eu.hithredin.spsdk.app.BaseLoadFragment;
-import eu.hithredin.spsdk.ui.ScreenStatus;
+import eu.hithredin.spsdk.app.fragment.BaseLoadFragment;
+
 import eu.hithredin.spsdk.query.ResultInfo;
 import hugo.weaving.DebugLog;
 
@@ -50,14 +50,14 @@ public abstract class BaseRecyclerFragment<T> extends BaseLoadFragment implement
     }
 
 
-    protected void populateViews(Bundle savedInstanceState, ScreenStatus screenStatus){
-        super.populateViews(savedInstanceState, screenStatus);
+    protected void populateViews(Bundle savedInstanceState){
+        super.populateViews(savedInstanceState);
 
         adapter = buildAdapter();
         adapter.setCellController(buildCellController());
 
         if(recyclerView != null) {
-            layoutManager = buildRecyclerLayoutManager(screenStatus);
+            layoutManager = buildRecyclerLayoutManager();
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setAdapter(adapter);
         }
@@ -94,7 +94,7 @@ public abstract class BaseRecyclerFragment<T> extends BaseLoadFragment implement
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(fragmentLayout(), container, false);
         assignViews(root);
-        populateViews(savedInstanceState, getScreenStatus());
+        populateViews(savedInstanceState);
 
         cleanList();
         loadListQuery();
@@ -103,9 +103,9 @@ public abstract class BaseRecyclerFragment<T> extends BaseLoadFragment implement
 
     /**
      * Override to force a LayoutManager for the recyclerView
-     * @param screenStatus
+
      */
-    protected RecyclerView.LayoutManager buildRecyclerLayoutManager(ScreenStatus screenStatus) {
+    protected RecyclerView.LayoutManager buildRecyclerLayoutManager() {
         return new LinearLayoutManager(getActivity());
     }
 

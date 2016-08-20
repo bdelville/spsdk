@@ -1,9 +1,9 @@
-package eu.hithredin.spsdk.app;
+package eu.hithredin.spsdk.app.fragment;
 
 import android.os.Bundle;
 import android.view.View;
 
-import eu.hithredin.spsdk.ui.ScreenStatus;
+
 import eu.hithredin.spsdk.ui.layout.TabManager;
 
 /**
@@ -23,8 +23,8 @@ public abstract class BaseTabFragment extends BaseLayoutFragment {
 
 
     @Override
-    protected void populateViews(Bundle savedInstanceState, ScreenStatus status) {
-        super.populateViews(savedInstanceState, status);
-        tabManager.populateViews(savedInstanceState, status);
+    protected void populateViews(Bundle savedInstanceState) {
+        super.populateViews(savedInstanceState);
+        tabManager.populateViews(savedInstanceState);
     }
 }
